@@ -76,8 +76,8 @@ void set_left() {
 int calc_error(uint16_t input[8]) {
 
 /*
- * Positive error : black line is to the left , error = 40
- * Negative error : black line is to the right, error = -40
+ * Positive error : black line is to the left => ERROR = -40mm => error > 0 : steer to the right
+ * Negative error : black line is to the right => ERROR = 40mm => error < 0 : steer to the left
  */
   
   int error;
@@ -97,26 +97,27 @@ int calc_error(uint16_t input[8]) {
   return error;
 }
 
-
-int calculate_speed(int error) {
-
+int calc_p(int error) {
   int p = K_P * abs(error);
-  int d = K_D * abs(error - prev_error);
-  prev_error = error;
+  return p;
+}
 
-  //prev_error = error;
-  return base_speed + d;
+int calc_d(int error) {
+  int d = K_D * abs(error);
+  return d;
 }
 
 void control_car(int error) {
    //*  error > 0 : track is to the left
    //* error < 0 : track is to the right
 
-  if (error < 0) { // error < 0, Track is to the left, steer left
+   int p = calc_p(error);
+
+  if (error < 0) { // error < 0, Track is to the left, steer left !!! THIS WORKS, ADJUST K_P
       l_speed = base_speed;                             // Keep left wheel at base speed
-      r_speed = calculate_speed(error); // Speed up right wheel to steer right                     
+      r_speed = base_speed + p; // Speed up right wheel to steer right                     
    } else { // error > 0, Track is to the right, steer right
-      l_speed = calculate_speed(error); // Speed up right wheel to steer right
+      l_speed = base_speed + p; // Speed up right wheel to steer right
       r_speed = base_speed;                             // Keep left wheel at base speed
    }
 
