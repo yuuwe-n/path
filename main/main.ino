@@ -55,8 +55,48 @@ float K_D = 0.005;
 
 int prev_error = 0;
 
+
 int mins[8] = {756, 595,686,503,572,663,641,706};
 int maxs[8] = {1744,1321,1658,964,1155,1718,1489,1794};
+
+/*
+int mins[8] = {706, 641, 663, 572, 503, 686, 595, 756};
+int maxs[8] = {1794, 1489, 1718, 1155, 964, 1658, 1321, 1744};
+*/
+
+void nlsp_low() {
+  digitalWrite(left_nslp_pin, LOW);
+  digitalWrite(right_nslp_pin, LOW);
+}
+
+void test() { // this function will loop
+  
+  nlsp_low(); // TURN OFF WHEELS
+  
+  ECE3_read_IR(sensor_values);
+  int error = calc_error(sensor_values);
+
+  int* pwm = control_car(error);
+  int left_pwm = pwm[0];
+  int right_pwm = pwm[1];
+
+  Serial.print(left_pwm);
+  Serial.print("\t | \t");
+
+  Serial.print(right_pwm);
+  Serial.print("\t | \t");
+
+  Serial.print(error);
+  Serial.print("\t | \t");
+  for (unsigned char i = 0; i < 8; i++)
+  {
+    Serial.print(sensor_values[i]);
+    Serial.print('\t'); // tab to format the raw data into columns in the Serial monitor
+  }
+  Serial.println();
+
+  delay(500);
+}
 
 void set_forward() {
   digitalWrite(left_dir_pin,LOW);
@@ -73,7 +113,7 @@ void set_left() {
   digitalWrite(right_dir_pin,LOW);
 }
 
-int calc_error(uint16_t input[8]) {
+int calc_error(uint16_t input[8]) { // takes input of sensor values
 
 /*
  * Positive error : black line is to the left => ERROR = -40mm => error > 0 : steer to the right
@@ -107,9 +147,11 @@ int calc_d(int error) {
   return d;
 }
 
-void control_car(int error) {
+int* control_car(int error) {
    //*  error > 0 : track is to the left
    //* error < 0 : track is to the right
+
+   int pwm[2];
 
    int p = calc_p(error);
 
@@ -125,14 +167,24 @@ void control_car(int error) {
   // r_speed = constrain(r_speed, 0, max_speed);
   analogWrite(left_pwm_pin, l_speed);
   analogWrite(right_pwm_pin, r_speed);
+
+  l_speed=0;
+  r_speed=0;
+
+  pwm[0] = l_speed;
+  pwm[1] = r_speed;
+  return pwm;
+  
 }
 
 void loop() {
   set_forward(); // make sure direction of car is forward
 
-  ECE3_read_IR(sensor_values);
-  int error = calc_error(sensor_values);
+  test();
+
+  //ECE3_read_IR(sensor_values);
+  //int error = calc_error(sensor_values);
   
-  control_car(error);
+  //control_car(error);
   
   }
