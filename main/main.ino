@@ -1,4 +1,5 @@
 #include <ECE3.h>
+#include <init.h>
 
 uint16_t sensor_values[8]; // sensor values: right -> left, 0 -> 7
 
@@ -82,6 +83,8 @@ int avg_encoder() {
   return ((l_encoder + r_encoder) / 2.0);
 }
 
+
+// you may want to reset, encoder after completing a certain duration
 int revs() { // returns wheel revolutions
   int revolutions = avg_encoder() / 360;
   return revolutions;
@@ -97,7 +100,33 @@ void test_encoder() {
   Serial.println();
 }
 
-void test(bool wheels = false) { // this function will loop
+int calc_error(uint16_t input[8]) { // takes input of sensor values
+
+/*
+ * Negative error : black line is to the left => ERROR = -40mm => error < 0 : steer to the left
+ * Positive error : black line is to the right => ERROR = 40mm => error > 0 : steer to the right
+ */
+  
+  int error;
+  int weighted_sum = 0;
+  int temp[8]={0,0,0,0,0,0,0,0};
+  
+  for (int i = 0; i < 8; i++) {
+    temp[i] = input[i] - mins[i];
+    if (temp[i] <=0) {
+      temp[i]=0;
+    } 
+    temp[i] = temp[i] * 1000 / maxs[i];
+    weighted_sum += temp[i] * weights[i];
+  }
+  error = weighted_sum / 8;
+
+  store_data(error); // MAY NEED TO REMOVE IN DRIVING
+  
+  return error;
+}
+
+void test_real_time(bool wheels = false) { // this function should loop
   
   set_nlsp(wheels); // TURN OFF WHEELS
   
@@ -126,30 +155,6 @@ void test(bool wheels = false) { // this function will loop
   delay(500);
 }
 
-int calc_error(uint16_t input[8]) { // takes input of sensor values
-
-/*
- * Negative error : black line is to the left => ERROR = -40mm => error < 0 : steer to the left
- * Positive error : black line is to the right => ERROR = 40mm => error > 0 : steer to the right
- */
-  
-  int error;
-  int weighted_sum = 0;
-  int temp[8]={0,0,0,0,0,0,0,0};
-  
-  for (int i = 0; i < 8; i++) {
-    temp[i] = input[i] - mins[i];
-    if (temp[i] <=0) {
-      temp[i]=0;
-    } 
-    temp[i] = temp[i] * 1000 / maxs[i];
-    weighted_sum += temp[i] * weights[i];
-  }
-  error = weighted_sum / 8;
-
-  return error;
-}
-
 float K_P = 0.01;
 float K_D = 0.005;
 
@@ -164,17 +169,17 @@ int calc_d(int error) {
 }
 
 int* control_car(int error) {
-   //*  error > 0 : track is to the RIGHT
-   //* error < 0 : track is to the LEFT
+   //*  error > 0 : track is to the LEFT
+   //* error < 0 : track is to the RIGHT
 
    static int pwm[2]; // [0] is left_pwm, [1] is right_pwm
 
    int p = calc_p(error);
 
-   if (error < 0) { // error < 0, Track is to the left, steer left
+   if (error < 0) { // error < 0, Track is to the RIGHT, steer RIGHT
       l_speed = base_speed + p; // Speed up left wheel
       r_speed = base_speed - p; // Slow down right wheel                  
-    } else { // error > 0, Track is to the right, steer right
+    } else { // error > 0, Track is to the LEFT, steer LEFT
       l_speed = base_speed - p; // Slow down left wheel
       r_speed = base_speed + p; // Speed up right wheel
     }
@@ -190,37 +195,71 @@ int* control_car(int error) {
   return pwm;
 }
 
-void start() {
+void drive() {
   set_forward();
   ECE3_read_IR(sensor_values);
   int error = calc_error(sensor_values);
   control_car(error);
 }
 
-// TODO, do data collection
+const int DATA_COUNT = 1500;
+short count = 0;
+short data[DATA_COUNT];
 
-int data[0][2];
-int store_data() {
+void store_data(int error) {
+  data[count] = error;
+  count += 1;
+}
+
+unsigned long startTime;
+const unsigned long delayTime = 10000;
+void test_store_data() {
+  drive();
+  if (millis() - startTime >= delayTime) {
+        stop_car();      // Call the function after 10 seconds
+        startTime = millis();  // Reset startTime if you want to call the function every 10 seconds
+  }
+}
+
+void output_data() {
+  while (true){
+    if (!digitalRead(bump_5)) {
+      for (int i = 0; i < DATA_COUNT; i++) {
+        Serial.print(data[i]); Serial.print('\t');
+      }
+    }
+  }
 }
 
 void stop_car() {
   analogWrite(left_pwm_pin, 0);
   analogWrite(right_pwm_pin, 0);
+  analogWrite(LED_RF, HIGH); // turn on yellow LED 
+
+  output_data();
 }
 
 void duration(int max_revs){ // stops after number of revolutions
-  if (revs() < max_revs){
+  if (revs() <= max_revs){
     stop_car();
+    return;
   }
+  drive();
 }
 
 void loop() {
-
-  bool s = analogRead(bump_5);
-  Serial.println(s);
-  delay(500);
+  //test_real_time(false);
+  //drive();
   
-  //test(false);
-  //start();
+}
 
-  }
+  /* TODO:
+   *  - test wheel direction / variable names for left/right
+   *  - test store_data
+   *  - test stop_car
+   *  - test output_data
+   *  - test duration
+   *  - 360 degree function
+   *  - donut function
+   *  - bump => change k_p, k_d
+   */
