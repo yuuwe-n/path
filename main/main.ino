@@ -6,6 +6,14 @@
 
 void setup() {
   initialize();
+  
+  while (digitalRead(bump_5)){
+  ECE3_read_IR(sensor_values);
+  int error = calc_error(sensor_values);
+  digitalWrite(LED_RF, HIGH); // Turn the LED on
+  }
+  delay(500);
+  
 }
 
 int calc_error(uint16_t input[8]) { // takes input of sensor values
@@ -136,7 +144,7 @@ void output_data() {
   while (true){
     if (!digitalRead(bump_5)) {
       for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.print(data[i]); Serial.print('\t');
+        Serial.println(data[i]);
       }
     }
   }
@@ -159,6 +167,18 @@ void duration(int max_revs){ // stops after number of revolutions
 }
 
 void loop() {
+  set_nlsp(LOW);
+
+  /* THIS WORKS
+  bool s = digitalRead(bump_5);
+  Serial.println(s);
+  delay(500);
+  */
+  digitalWrite(LED_RF, LOW); // Turn the LED on
+  output_data();
+
+  //test_store_data();
+
   //test_outputs(false);
   //drive();
   
@@ -176,4 +196,10 @@ void loop() {
    *  - watch out for void, and global variables, when doing multiple files
    *  - CHECK SET_LEFT, SET_RIGHT FUNCTIONS
    *  - OTHER LEDS
+   *  
+   *  TEST INIT FILE
+   *  TEST MOTOR_CONTROL.H
+   *  TEST MOVEMENT.H
+   *  TEST ENCODER.H
+   *  TEST PD_CONTROL.H
    */

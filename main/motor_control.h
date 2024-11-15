@@ -1,6 +1,8 @@
 #ifndef MOTOR_CONTROL_H
 #define MOTOR_CONTROL_H
 
+
+
 /*
  * FILE FOR CONTROLLING MOTOR DIRECTION, NLSP, MOTOR PINS
  */
@@ -26,4 +28,5 @@ void set_left() {
   digitalWrite(left_dir_pin,HIGH);
   digitalWrite(right_dir_pin,LOW);
 }
+
 #endif

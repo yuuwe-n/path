@@ -40,6 +40,9 @@ void initialize() {
   ECE3_Init();
   
   Serial.begin(9600);
+  pinMode(bump_5,INPUT_PULLUP);
+  pinMode(LED_RF, OUTPUT);
+  
   pinMode(left_nslp_pin,OUTPUT);
   pinMode(left_dir_pin,OUTPUT);
   pinMode(left_pwm_pin,OUTPUT);
