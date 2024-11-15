@@ -27,4 +27,11 @@ void set_left() {
   digitalWrite(right_dir_pin,LOW);
 }
 
+void test_direction(){
+  set_nlsp(true);
+  set_left();
+  analogWrite(left_pwm_pin, 25);
+  analogWrite(right_pwm_pin, 25);
+}
+
 #endif

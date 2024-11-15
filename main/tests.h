@@ -3,7 +3,7 @@
 #include "motor_control.h"
 #include "pd_control.h"
 
-void test_outputs(bool wheels = false) { // does not rely on loop()
+void test_outputs(bool wheels = false) { // looping function
   set_nlsp(wheels); // TURN OFF WHEELS
 
   while(true) {
@@ -30,15 +30,5 @@ void test_outputs(bool wheels = false) { // does not rely on loop()
     Serial.println();
   
     delay(500);
-  }
-}
-
-unsigned long startTime;
-const unsigned long delayTime = 10000;
-void test_store_data() {
-  drive_car();
-  if (millis() - startTime >= delayTime) {
-        stop_car();      // Call the function after 10 seconds
-        startTime = millis();  // Reset startTime if you want to call the function every 10 seconds
   }
 }

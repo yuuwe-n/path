@@ -8,8 +8,15 @@
 void setup() {
   initialize();
 
-  set_nlsp(false);
-  duration(1);
+  // test_direction(); // TEST THIS FIRST THING TMMRW
+
+  
+  // duration(1);
+
+}
+
+void loop() {
+}
 
   /*
   while (digitalRead(bump_5)){
@@ -19,11 +26,8 @@ void setup() {
   }
   delay(500);
   */
-}
 
-void loop() {
-}
-
+  
   /* THIS WORKS
   bool s = digitalRead(bump_5);
   Serial.println(s);

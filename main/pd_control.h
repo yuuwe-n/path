@@ -1,8 +1,6 @@
 #ifndef PD_CONTROL_H
 #define PD_CONTROL_H
 
-// START HERE AND TEST YOUR STORE_DATA FUNCTION
-
 const int DATA_COUNT = 1500;
 int count = 0;
 short data[DATA_COUNT];
