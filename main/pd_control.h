@@ -110,7 +110,6 @@ int* control_car(int error) { // adjusts every loop, does not rely on loop
 
     prev_error = error;
 
-  
   // return pwm speeds
   pwm[0] = l_speed;
   pwm[1] = r_speed;

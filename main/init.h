@@ -14,7 +14,11 @@ const int right_dir_pin=30;
 const int right_pwm_pin=39;
 
 const int bump_0 = 24; // this bump is on the right most side
-const int bump_5 = 28; // bump is on left most side
+const int bump_1 = 25;
+const int bump_2 = 6;
+const int bump_3 = 27;
+const int bump_4 = 8;
+const int bump_5 = 28; // this bump is on the left most side
 // TRUE => bump is not switched
 // FALSE => bump is switched
 
@@ -41,7 +45,13 @@ void initialize() {
   ECE3_Init();
   
   Serial.begin(9600);
+  pinMode(bump_0,INPUT_PULLUP);
+  pinMode(bump_1,INPUT_PULLUP);
+  pinMode(bump_2,INPUT_PULLUP);
+  pinMode(bump_3,INPUT_PULLUP);
+  pinMode(bump_4,INPUT_PULLUP);
   pinMode(bump_5,INPUT_PULLUP);
+
   pinMode(LED_Y, OUTPUT);
   pinMode(LED_B, OUTPUT);
 

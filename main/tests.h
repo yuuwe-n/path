@@ -28,11 +28,57 @@ void test_outputs(bool wheels = false) { // looping function
       Serial.print('\t'); // tab to format the raw data into columns in the Serial monitor
     }
     Serial.println();
-  
+
     delay(500);
   }
 }
 
+void variate_kd() {
+  if (!digitalRead(bump_5)) {
+    K_D = 1;
+  }
+  if (!digitalRead(bump_4)) {
+    K_D = 0.8;
+  }
+  if (!digitalRead(bump_3)) {
+    K_D = 0.6;
+  }
+  if (!digitalRead(bump_2)) {
+    K_D = 0.4;
+  }
+  if (!digitalRead(bump_1)) {
+    K_D = 0.2;
+  }
+  if (!digitalRead(bump_0)) {
+    K_D = 0.1;
+  }
+}
+
+void variate_kp() {
+  if (!digitalRead(bump_5)) {
+    K_P = 0.25;
+  }
+  if (!digitalRead(bump_4)) {
+    K_P = 0.20;
+  }
+  if (!digitalRead(bump_3)) {
+    K_P = 0.15;
+  }
+  if (!digitalRead(bump_2)) {
+    K_P = 0.10;
+  }
+  if (!digitalRead(bump_1)) {
+    K_P = 0.05;
+  }
+  if (!digitalRead(bump_0)) {
+    K_P = 0.01;
+  }
+}
+
 void test_pd() {
-  if 
+  //K_P = 0.01;
+  K_D = 0.4;
+  variate_kp();
+  drive_car();
+  //Serial.println(K_P);
 }
