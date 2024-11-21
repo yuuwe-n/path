@@ -18,22 +18,3 @@ void loop() {
   //drive_car();
   test_pd();
 }
-
-  /*
-  while (digitalRead(bump_4)){
-  ECE3_read_IR(sensor_values);
-  int error = calc_error(sensor_values);
-  digitalWrite(LED_RF, HIGH); // Turn the LED on
-  }
-  delay(500);
-  */
-
-  
-  /* THIS WORKS
-  bool s = digitalRead(bump_4);
-  Serial.println(s);
-  delay(500);
-  */
-  
-  // digitalWrite(LED_RF, LOW); // Turn the LED on
-  // output_data();
