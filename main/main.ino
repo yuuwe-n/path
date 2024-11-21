@@ -12,6 +12,7 @@ void setup() {
 
   
   // duration(1);
+  duration(500);
 
 }
 

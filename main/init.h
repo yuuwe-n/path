@@ -13,12 +13,13 @@ const int right_nslp_pin=11;
 const int right_dir_pin=30;
 const int right_pwm_pin=39;
 
-const int bump_0 = 24; // this bump is on the right
-const int bump_5 = 28; // lets use this bump because it is on the left side
+const int bump_0 = 24; // this bump is on the right most side
+const int bump_5 = 28; // bump is on left most side
 // TRUE => bump is not switched
 // FALSE => bump is switched
 
-const int LED_RF = 41;
+const int LED_Y = 41;
+const int LED_B = 77;
 
 // pwm signal ranges from: 0 - 255 
 int max_speed = 127;
@@ -41,7 +42,9 @@ void initialize() {
   
   Serial.begin(9600);
   pinMode(bump_5,INPUT_PULLUP);
-  pinMode(LED_RF, OUTPUT);
+  pinMode(LED_Y, OUTPUT);
+  pinMode(LED_B, OUTPUT);
+
   
   pinMode(left_nslp_pin,OUTPUT);
   pinMode(left_dir_pin,OUTPUT);

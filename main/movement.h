@@ -29,7 +29,7 @@ void test_rotation() {
   while(true) {
     encoder_counts = avg_encoder();
     if (!digitalRead(bump_5)){
-      analogWrite(LED_RF, HIGH);
+      analogWrite(LED_Y, HIGH);
       break;
     }
   }

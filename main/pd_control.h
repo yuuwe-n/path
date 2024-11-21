@@ -1,13 +1,20 @@
 #ifndef PD_CONTROL_H
 #define PD_CONTROL_H
 
-const int DATA_COUNT = 1500;
+const int DATA_COUNT = 500;
 int count = 0;
-short data[DATA_COUNT];
+short data[DATA_COUNT][2];
 
-void store_data(int error) {
+void store_data(int error, uint16_t sensor_values[8]) {
   if (count < DATA_COUNT) {
-    data[count] = error;
+    data[count][0] = error;
+    for (int i = 2; i < 6; i++) {
+        if (sensor_values[i] >= 2400) {
+            data[count][1] = 1000;
+        } else {
+          data[count][1] = 0;
+        }
+    }
     count += 1;
   }
 }
@@ -16,11 +23,16 @@ void output_data() {
   while (true){
     if (!digitalRead(bump_5)) {
       for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.println(data[i]);
+        Serial.println(data[i][0]);
+        delay(20);
+      }
+      Serial.println("-----------------");
+      for (int i = 0; i < DATA_COUNT; i++) {
+        Serial.println(data[i][1]);
         delay(20);
       }
     }
-    //digitalWrite(LED_RF, HIGH);
+    //digitalWrite(LED_Y, HIGH);
   }
 }
 
@@ -55,7 +67,7 @@ int calc_p(int error) {
 
 int calc_d(int error, int prev_error) {
   int d = K_D * abs(error - prev_error);
-  return d;
+  return d;c.
 }
 
 int* control_car(int error, int prev_error = 0) { // adjusts every loop, does not rely on loop
@@ -68,11 +80,11 @@ int* control_car(int error, int prev_error = 0) { // adjusts every loop, does no
    int d = calc_d(error, prev_error);
 
    if (error < 0) { // error < 0, Track is to the RIGHT, steer RIGHT
-      l_speed = base_speed + p; // Speed up left wheel
-      r_speed = base_speed - p; // Slow down right wheel                  
+      l_speed = base_speed + p + d; // Speed up left wheel
+      r_speed = base_speed - p + d; // Slow down right wheel                  
     } else { // error > 0, Track is to the LEFT, steer LEFT
-      l_speed = base_speed - p; // Slow down left wheel
-      r_speed = base_speed + p; // Speed up right wheel
+      l_speed = base_speed - p - d; // Slow down left wheel
+      r_speed = base_speed + p + d; // Speed up right wheel
     }
 
    prev_error = error;
@@ -93,20 +105,20 @@ void drive_car() { // is not a loop
   set_forward();
   ECE3_read_IR(sensor_values);
   int error = calc_error(sensor_values);
-  store_data(error);
+  store_data(error,sensor_values);
   control_car(error);
 }
 
 void stop_car() { // stop car
   analogWrite(left_pwm_pin, 0);
   analogWrite(right_pwm_pin, 0);
-  digitalWrite(LED_RF, HIGH); // turn on yellow LED 
+  digitalWrite(LED_Y, HIGH); // turn on yellow LED 
 }
 
-void duration(int max_revs){ // looping function: drives car and stops after number of revolutions
+void duration(int encode_ct){ // looping function: drives car and stops after number of encoder counts
   while(true) {
     //Serial.println(avg_encoder());
-    if (revs() >= max_revs){
+    if (avg_encoder() >= encode_ct){
       stop_car();
       delay(500);
       output_data();
@@ -115,4 +127,5 @@ void duration(int max_revs){ // looping function: drives car and stops after num
     drive_car();
   }
 }
+
 #endif
