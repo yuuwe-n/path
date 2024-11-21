@@ -9,14 +9,13 @@ void setup() {
   initialize();
 
   // test_direction(); // TEST THIS FIRST THING TMMRW
-
   
-  // duration(1);
-  duration(500);
+  // duration(2000); // 2000 encoder counts
 
 }
 
 void loop() {
+  //drive_car();
 }
 
   /*

@@ -19,6 +19,18 @@ void store_data(int error, uint16_t sensor_values[8]) {
   }
 }
 
+
+short pwm[DATA_COUNT][2];
+
+void store_pwm(int l_speed, int r_speed) {
+  if (count < DATA_COUNT) {
+    data[count][0] = l_speed;
+    data[count][1] = r_speed;
+    count += 1;
+  }
+}
+
+
 void output_data() {
   while (true){
     if (!digitalRead(bump_5)) {
@@ -66,11 +78,11 @@ int calc_p(int error) {
 }
 
 int calc_d(int error, int prev_error) {
-  int d = K_D * abs(error - prev_error);
-  return d;c.
+  int d = K_D *  (error - prev_error);
+  return d;
 }
 
-int* control_car(int error, int prev_error = 0) { // adjusts every loop, does not rely on loop
+int* control_car(int error) { // adjusts every loop, does not rely on loop
    //*  error > 0 : track is to the LEFT
    //* error < 0 : track is to the RIGHT
 
@@ -81,20 +93,24 @@ int* control_car(int error, int prev_error = 0) { // adjusts every loop, does no
 
    if (error < 0) { // error < 0, Track is to the RIGHT, steer RIGHT
       l_speed = base_speed + p + d; // Speed up left wheel
-      r_speed = base_speed - p + d; // Slow down right wheel                  
+      r_speed = base_speed - p - d; // Slow down right wheel
+                      
     } else { // error > 0, Track is to the LEFT, steer LEFT
       l_speed = base_speed - p - d; // Slow down left wheel
       r_speed = base_speed + p + d; // Speed up right wheel
     }
 
-   prev_error = error;
+    l_speed = constrain(l_speed, 0 , max_speed);
+    r_speed = constrain(r_speed, 0, max_speed);
 
-  //l_speed = constrain(l_speed, 0, max_speed);
-  //r_speed = constrain(r_speed, 0, max_speed);
+    store_pwm(l_speed,r_speed);
   
-  analogWrite(left_pwm_pin, l_speed);
-  analogWrite(right_pwm_pin, r_speed);
+    analogWrite(left_pwm_pin, l_speed);
+    analogWrite(right_pwm_pin, r_speed);
 
+    prev_error = error;
+
+  
   // return pwm speeds
   pwm[0] = l_speed;
   pwm[1] = r_speed;
@@ -105,7 +121,7 @@ void drive_car() { // is not a loop
   set_forward();
   ECE3_read_IR(sensor_values);
   int error = calc_error(sensor_values);
-  store_data(error,sensor_values);
+  // store_data(error,sensor_values); // STORES ERRORS & CROSS PIECE
   control_car(error);
 }
 
