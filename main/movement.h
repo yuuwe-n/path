@@ -11,6 +11,14 @@
 void donut(); // 360 degree
 void half_donut(); // 180 degree
 
+void donut(bool dir) {
+  rotate(dir, 360); // test how many encoder counts is one revolution
+}
+
+void half_donut(bool dir) {
+  rotate(dir, 360); // test how many encoder counts is one revolution
+}
+
 // diameter of wheel is 7cm
 // measure how many encoder counts is one circle
 // divide encoder counts by distance (cm) => encoder counts per cm
@@ -42,16 +50,20 @@ void test_rotation() {
   delay(2000);
 }
 
-void rotate(bool dir) {
-  delay(2000);
+// may need to add a delay before and after, or use stop_car
+void rotate(bool dir, int threshold) { // threshold (in encoder counts)
   if (dir == true) { // spin right
     set_right();
   } else { // spin left
     set_left();
   }
-  
-  
-  delay(2000);
+
+  int ct = avg_encoder();
+  threshold = threshold + ct; // doesn't matter if encoder is reset or not
+  while (ct < threshold) {
+      analogWrite(left_pwm_pin, 40);
+      analogWrite(right_pwm_pin, 40);
+  }
 }
 
 #endif

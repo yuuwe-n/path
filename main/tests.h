@@ -1,11 +1,22 @@
 #ifndef TESTS_H
 #define TESTS_H
 
-#include "init.h"
+#include "data_collection.h"
 #include "encoder.h"
+#include "init.h"
 #include "motor_control.h"
 #include "pd_control.h"
 #include "routines.h"
+
+void test_encoder() {
+  set_nlsp(true);
+  analogWrite(left_pwm_pin, 40);
+  analogWrite(right_pwm_pin, 40);
+  Serial.print(avg_encoder());
+  Serial.print('\t');
+  Serial.print(revs());
+  Serial.println();
+}
 
 void test_outputs(bool nlsp = false) { // looping function
   set_nlsp(nlsp); // TURN OFF WHEELS
@@ -81,6 +92,20 @@ void test_pd() {
   variate_kp();
   drive_car();
   //Serial.println(K_P);
+}
+
+// { K_P, K_D }
+float presets[3][2] = { 
+{0, 0} ,
+{0.2, 0.4} ,
+{0.25, 0.4}
+};
+
+void test_presets() {
+  K_P = presets[0][0]; // row, column
+  K_D = presets[0][1];
+  variate_kp();
+  drive_car();
 }
 
 #endif

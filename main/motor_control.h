@@ -33,6 +33,12 @@ void stop_car() { // stop car
   digitalWrite(LED_Y, HIGH); // turn on yellow LED 
 }
 
+void start_car() { // start car
+  analogWrite(left_pwm_pin, 1);
+  analogWrite(right_pwm_pin, 1);
+  digitalWrite(LED_Y, LOW); // turn on yellow LED
+}
+
 void test_direction(){
   set_nlsp(true);
   set_right();

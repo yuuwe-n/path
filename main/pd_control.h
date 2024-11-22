@@ -1,7 +1,6 @@
 #ifndef PD_CONTROL_H
 #define PD_CONTROL_H
 
-#include "data_collection.h"
 #include "error.h"
 
 int calc_p(int error) {

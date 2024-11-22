@@ -77,7 +77,7 @@ void initialize() {
   resetEncoderCount_left();
   resetEncoderCount_right();
 
-  delay(4000); // wait for setup
+  delay(3000); // wait for setup
 }
 
 #endif
