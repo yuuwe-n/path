@@ -8,13 +8,24 @@
 void setup() {
   initialize();
 
-  // test_direction(); // TEST THIS FIRST THING TMMRW
+  K_P = 0.01;
+  K_D = 0.2;
   
-  // duration(2000); // 2000 encoder counts
+  duration(500); // 2000 encoder counts
 
 }
 
 void loop() {
   //drive_car();
-  test_pd();
+  
+  // test_pd();
+
+  //test_direction();
 }
+
+/* FUNCTIONS
+ *  void drive_car()
+ *  void stop_car()
+ *  void duration(int encode_ct)
+ *  
+ */

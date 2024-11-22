@@ -38,8 +38,12 @@ int weights[8] = {-15, -14, -12, -8, 8, 12, 14, 15};
 int mins[8] = {756, 595,686,503,572,663,641,706};
 int maxs[8] = {1744,1321,1658,964,1155,1718,1489,1794};
 
-float K_P = 0.01;
-float K_D = 0.5;
+
+float K_P = 0;
+float K_D = 0;
+
+// float K_P = 0.01;
+// float K_D = 0.5;
 
 void initialize() {
   ECE3_Init();

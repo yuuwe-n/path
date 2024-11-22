@@ -17,21 +17,27 @@ void set_forward() {
   digitalWrite(right_dir_pin,LOW);
 }
 
-void set_right() { // CHECK THESE PINS
-  digitalWrite(left_dir_pin,LOW);
-  digitalWrite(right_dir_pin,HIGH);
+void set_right() {
+  digitalWrite(left_dir_pin,LOW); // forward
+  digitalWrite(right_dir_pin,HIGH); // backward
 }
 
 void set_left() {
-  digitalWrite(left_dir_pin,HIGH);
-  digitalWrite(right_dir_pin,LOW);
+  digitalWrite(left_dir_pin,HIGH); // backward
+  digitalWrite(right_dir_pin,LOW); // forward
+}
+
+void stop_car() { // stop car
+  analogWrite(left_pwm_pin, 0);
+  analogWrite(right_pwm_pin, 0);
+  digitalWrite(LED_Y, HIGH); // turn on yellow LED 
 }
 
 void test_direction(){
   set_nlsp(true);
-  set_left();
-  analogWrite(left_pwm_pin, 25);
-  analogWrite(right_pwm_pin, 25);
+  set_right();
+  analogWrite(left_pwm_pin, 40);
+  analogWrite(right_pwm_pin, 40);
 }
 
 #endif

@@ -9,7 +9,11 @@ int avg_encoder() {
   return ((l_encoder + r_encoder) / 2.0);
 }
 
-// you may want to reset, encoder after completing a certain duration
+void reset_encoder() {
+  resetEncoderCount_left();
+  resetEncoderCount_right();
+}
+
 int revs() { // returns wheel revolutions
   int revolutions = avg_encoder() / 360;
   return revolutions;
