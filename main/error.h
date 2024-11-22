@@ -9,7 +9,7 @@ int calc_error(uint16_t input[8]) {
  */
   
   int error;
-  int weighted_sum = 0;
+  long weighted_sum = 0;
   int temp[8]={0,0,0,0,0,0,0,0};
   
   for (int i = 0; i < 8; i++) {

@@ -14,6 +14,11 @@ Sketch uses 44720 bytes (17%) of program storage space. Maximum is 262144 bytes.
 Global variables use 60312 bytes (92%) of dynamic memory, leaving 5224 bytes for local variables. Maximum is 65536 bytes.
 Low memory available, stability problems may occur.
 
+ERROR.h
+
+idk if i need to use a long for the weighted sum
+why do i get values like 4000, test this with output thing later
+
 Testing Files
 - [ ] data\_collection
 - [x] encoder

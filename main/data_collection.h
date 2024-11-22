@@ -20,7 +20,7 @@ void store_error(int error, uint16_t sensor_values[8]) {
   }
 }
 
-byte pwm[DATA_COUNT][2]
+byte pwm[DATA_COUNT][2];
 
 void store_pwm(int l_speed, int r_speed) {
   if (count_pwm < DATA_COUNT) {
@@ -32,18 +32,6 @@ void store_pwm(int l_speed, int r_speed) {
 
 // we can try using this array later, but to save memory keep it commented
 // remember if we uncomment, to change data => pwm array
-/*
-short pwm[DATA_COUNT][2];
-
-void store_pwm(int l_speed, int r_speed) {
-  if (count_pwm < DATA_COUNT) {
-    pwm[count_pwm][0] = l_speed;
-    pwm[count_pwm][1] = r_speed;
-    count_pwm += 1;
-  }
-}
-*/
-
 /*
 void store_pwm(int l_speed, int r_speed) {
   if (count < DATA_COUNT) {
@@ -70,7 +58,7 @@ void output_data() {
   }
 }
 
-/*
+
 void output_all() {
   while (true){
     if (!digitalRead(bump_5)) {
@@ -98,6 +86,6 @@ void output_all() {
     }
   }
 }
-*/
+
 
 #endif

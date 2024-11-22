@@ -12,7 +12,7 @@ void drive_car() { // not a looping functions
   store_error(error,sensor_values); // STORES ERRORS & CROSS PIECE
   
   pd_control(error);
-  //store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
+  store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
 }
 
 // LOOPING FUNCTIONS
@@ -23,7 +23,7 @@ void duration(int encode_ct){ // looping function: drives car and stops after nu
     if (avg_encoder() >= encode_ct){
       stop_car();
       delay(500);
-      output_data();
+      output_all();
       return;
     }
     drive_car();

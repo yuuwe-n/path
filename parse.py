@@ -1,52 +1,40 @@
-#!/usr/bin/env python3
-
 import csv
 
-def parse_to_columns_with_index(input_text, output_file):
-    """
-    Parses input text where:
-    - Commas separate values within a row.
-    - Newlines separate columns.
-    Adds an index column starting from 0.
-    
-    Saves the parsed content into a CSV file.
-    """
-    # Split the input into lines (columns)
-    columns = input_text.strip().split('\n')
+def main():
+    input_file = "input"  # Input file name
+    output_file = "output.csv"  # Output CSV file name
 
-    # Split each line into its comma-separated values
-    parsed_data = [line.split(',') for line in columns]
+    try:
+        # Step 1: Read data from the input file
+        with open(input_file, "r") as file:
+            lines = file.readlines()
 
-    # Transpose the data to align rows with columns
-    max_length = max(len(col) for col in parsed_data)
-    transposed_data = list(zip(*[col + [''] * (max_length - len(col)) for col in parsed_data]))
+        # Step 2: Parse each line into columns
+        parsed_data = []
+        for line in lines:
+            values = [value.strip() for value in line.strip().split(",")]
+            parsed_data.append(values)  # Each line becomes a column
 
-    # Add an index column at the beginning of each row
-    indexed_data = [[index] + list(row) for index, row in enumerate(transposed_data)]
+        # Step 3: Transpose rows to columns
+        transposed_data = list(zip(*parsed_data))
 
-    # Write to a CSV file
-    with open(output_file, 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerows(indexed_data)
+        # Step 4: Add an index column
+        index_column = list(range(len(transposed_data)))  # Generate index column
+        transposed_data_with_index = [[idx] + list(row) for idx, row in zip(index_column, transposed_data)]
+
+        # Step 5: Write the transposed data with index to a CSV file
+        with open(output_file, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["Index"] + [f"Column {i+1}" for i in range(len(parsed_data))])  # Header
+            writer.writerows(transposed_data_with_index)
+
+        print(f"Data successfully converted and saved to {output_file}")
+
+    except FileNotFoundError:
+        print(f"Error: The file '{input_file}' does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    print("Paste your data below (comma-separated per line). Press Enter twice when done:\n")
-
-    # Capture multi-line input from the user
-    input_lines = []
-    while True:
-        try:
-            line = input()
-            if line.strip() == "":
-                break
-            input_lines.append(line)
-        except EOFError:  # Handle Ctrl+D for end-of-input
-            break
-
-    input_text = "\n".join(input_lines)
-    output_file = "output.csv"
-
-    # Parse and save the input
-    parse_to_columns_with_index(input_text, output_file)
-    print(f"\nData has been saved to {output_file}.")
+    main()
 
