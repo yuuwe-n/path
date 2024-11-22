@@ -48,7 +48,7 @@ float K_D = 0;
 void initialize() {
   ECE3_Init();
   
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(bump_0,INPUT_PULLUP);
   pinMode(bump_1,INPUT_PULLUP);
   pinMode(bump_2,INPUT_PULLUP);

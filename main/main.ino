@@ -14,7 +14,7 @@ void setup() {
   duration(2000);
   stop_car();
   delay(500);
-  output_data();
+  output_3();
 }
 
 void loop() {
