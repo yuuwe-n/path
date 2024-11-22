@@ -1,21 +1,30 @@
 #!/usr/bin/env python3
 
 import csv
+import sys
 
 def main():
     input_file = "input"  # Input file name
     output_file = "output.csv"  # Output CSV file name
 
     try:
+        csv.field_size_limit(sys.maxsize)  # Handle large CSV rows
+
         # Step 1: Read data from the input file
         with open(input_file, "r") as file:
             lines = file.readlines()
 
-        # Step 2: Parse each line into columns
+        # Step 2: Parse and normalize each line into columns
         parsed_data = []
         for line in lines:
-            values = [value.strip() for value in line.strip().split(",")]
-            parsed_data.append(values)  # Each line becomes a column
+            if line.strip():  # Skip empty lines
+                values = [value.strip() for value in line.strip().split(",")]
+                parsed_data.append(values)
+
+        # Normalize row lengths
+        max_length = max(len(row) for row in parsed_data)
+        for row in parsed_data:
+            row.extend([""] * (max_length - len(row)))  # Add padding for shorter rows
 
         # Step 3: Transpose rows to columns
         transposed_data = list(zip(*parsed_data))

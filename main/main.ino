@@ -11,10 +11,10 @@ void setup() {
   K_P = 0.01;
   K_D = 0.2;
   
-  duration(2000);
+  duration(500);
   stop_car();
   delay(500);
-  output_3();
+  output_5();
 }
 
 void loop() {

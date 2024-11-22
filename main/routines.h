@@ -23,6 +23,7 @@ void drive_car(bool inner_sensors = 0) { // not a looping functions
   
   int error = calc_error(sensor_values);
   store_error(error,sensor_values); // STORES ERRORS & CROSS PIECE
+  store_sensors(sensor_values);
   
   pd_control(error);
   store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
