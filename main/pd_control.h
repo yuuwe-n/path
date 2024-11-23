@@ -38,4 +38,42 @@ void pd_control(int error) {
     prev_error = error;
 }
 
+void pd_turn_control(int error) {
+   //*  error > 0 : track is to the LEFT
+   //* error < 0 : track is to the RIGHT
+
+   int p = calc_p(error);
+   int d = calc_d(error, prev_error);
+
+   if (error < 0) { // error < 0, Track is to the RIGHT, steer RIGHT
+      l_speed = base_speed + p + d; // Speed up left wheel
+      r_speed = base_speed - p - d; // Slow down right wheel
+                      
+    } else { // error > 0, Track is to the LEFT, steer LEFT
+      l_speed = base_speed - p - d; // Slow down left wheel
+      r_speed = base_speed + p + d; // Speed up right wheel
+    }
+
+    if (l_speed < 0) {
+      l_speed = abs(l_speed) * 0.10;
+      digitalWrite(left_dir_pin, HIGH); // backward
+    } else {
+        digitalWrite(left_dir_pin, LOW);  // forward
+    }
+    if (r_speed < 0) {
+        r_speed = abs(r_speed) * 0.25;
+        digitalWrite(right_dir_pin, HIGH); // backward
+    } else {
+        digitalWrite(right_dir_pin, LOW);  // forward
+    }
+
+    l_speed = constrain(l_speed, 0 , max_speed);
+    r_speed = constrain(r_speed, 0, max_speed);
+  
+    analogWrite(left_pwm_pin, l_speed);
+    analogWrite(right_pwm_pin, r_speed);
+
+    prev_error = error;
+}
+
 #endif

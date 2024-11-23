@@ -14,7 +14,7 @@ void read_inner(uint16_t sensor_values[8]) {
   }
 }
 
-void drive_car(bool inner_sensors = 0) { // not a looping functions
+void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functions
   ECE3_read_IR(sensor_values);
 
   if (inner_sensors == 1) {
@@ -22,22 +22,35 @@ void drive_car(bool inner_sensors = 0) { // not a looping functions
   }
   
   int error = calc_error(sensor_values);
-  store_error(error,sensor_values); // STORES ERRORS & CROSS PIECE
+  store_error(error, sensor_values); // STORES ERRORS & CROSS PIECE
   store_sensors(sensor_values);
+
+  /*
+  uint16_t norm_values[8];
+  calc_norm(sensor_values, norm_values);
+  store_sensors(norm_values);
+  */
+
   
-  pd_control(error);
+  if ( turn ) {
+    pd_turn_control(error);
+  } else {
+    pd_control(error);
+  }
+
+  
   //store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
 }
 
 
 // LOOPING FUNCTIONS
 
-void duration(int threshold, bool inner_sensors = 0){
+void duration(int threshold, bool inner_sensors = 0, bool turn = 0){
   int ct = avg_encoder();
   threshold = threshold + ct;
   while (ct < threshold) {
     ct = avg_encoder();
-    drive_car(inner_sensors);
+    drive_car(inner_sensors, turn);
   }
 }
 

@@ -39,6 +39,12 @@ void start_car() { // start car
   digitalWrite(LED_Y, LOW); // turn on yellow LED
 }
 
+void stop_start(int t) {
+  stop_car();
+  delay(t);
+  start_car();
+}
+
 void test_direction(){
   set_nlsp(true);
   set_right();

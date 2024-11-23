@@ -30,13 +30,32 @@ void rotate(int threshold, int spd, bool dir) { // threshold (in encoder counts)
   set_forward();
 }
 
-
 void donut(int spd, bool dir = true) {
   rotate(728, spd, dir); // test how many encoder counts is one revolution
 }
 
 void half_donut(int spd, bool dir = true) {
   rotate(364, spd, dir); // test how many encoder counts is one revolution
+}
+
+void loop_1(int threshold, int spd, bool dir = 1) { // threshold (in encoder counts)
+
+  int ct = avg_encoder();
+  threshold = threshold + ct; // doesn't matter if encoder is reset or not
+  while (ct < threshold) {
+        if (dir == true) { // spin right
+          analogWrite(left_pwm_pin, spd);
+          analogWrite(right_pwm_pin, 0);
+        } else { // spin left
+          analogWrite(left_pwm_pin, 0);
+          analogWrite(right_pwm_pin, spd);
+        }
+      ct = avg_encoder();
+  }
+  
+  analogWrite(left_pwm_pin, spd);
+  analogWrite(right_pwm_pin, spd);
+  set_forward();
 }
 
 

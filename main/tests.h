@@ -88,11 +88,13 @@ void variate_kp() {
 
 void test_pd() {
   //K_P = 0.01;
-  K_D = 0.4;
+  K_D = 0.30;
   variate_kp();
-  drive_car();
-  //Serial.println(K_P);
+  drive_car(0, 1);
 }
+
+
+
 
 // { K_P, K_D }
 float presets[3][2] = { 

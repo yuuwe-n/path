@@ -9,30 +9,54 @@
 void setup() {
   initialize();
 
-  //routine0();
+  //routine_0();
 
-/*
+  K_P = 0.10;
+  K_D = 0.30; // holy good
+
+  while(true) {
+    drive_car(0, 1);
+    if (!digitalRead(bump_5)) {
+        stop_car();
+        delay(500);
+        output_5();
+    }
+  }
+}
+
+
+void routine_0() {
+
+  // duration(int threshold, bool inner_sensors = 0, bool turn = 0)
+  // donut(base_speed); 
+  // loop_1 ( int threshold, int spd, bool dir); 
+
   K_P = 0.10;
   K_D = 0.35;
   
-  duration(500);
+  duration(550, 0 , 0);
+  stop_start(2000);
+  loop_1(500, base_speed, 1);
+  stop_start(2000);
+
+  base_speed = 20;
+  duration(500, 1, 0);
+  stop_start(2000);
+  base_speed = 40;
+
+}
+
+  /*
   stop_car();
   delay(500);
   output_5();
   */
-}
-
-void routine0() {
-  duration(500);
-  donut(base_speed);
-  duration(250);
-}
 
 
 void loop() {
   //drive_car();
   
-  // test_pd();
+  test_pd();
 }
 
 /* FUNCTIONS

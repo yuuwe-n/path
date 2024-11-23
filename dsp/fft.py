@@ -36,7 +36,21 @@ print(f"Low-frequency energy: {low_freq_energy}")
 high_freq_energy = np.sum(fft_magnitude[40:])  # Adjust range for high frequencies
 print(f"High-frequency energy: {high_freq_energy}")
 
+# Filter FFT results to 0-20 Hz
+frequency_range = (frequencies >= 0) & (frequencies <= 20)  # Boolean mask for 0–20 Hz range
+frequencies_0_20 = frequencies[frequency_range]
+fft_magnitude_0_20 = fft_magnitude[frequency_range]
 
+# Plot the spectrum for 0–20 Hz
+plt.figure(figsize=(10, 6))
+plt.plot(frequencies_0_20, fft_magnitude_0_20)
+plt.title("Frequency Spectrum (0-20 Hz)")
+plt.xlabel("Frequency (Hz)")
+plt.ylabel("Amplitude")
+plt.grid()
+plt.show()
+
+'''
 plt.figure(figsize=(10, 6))
 plt.plot(frequencies[:len(frequencies)//2], fft_magnitude[:len(frequencies)//2])  # Only positive frequencies
 plt.title("Frequency Spectrum of Error Signal")
@@ -44,6 +58,6 @@ plt.xlabel("Normalized Frequency")
 plt.ylabel("Amplitude")
 plt.grid()
 plt.show()
-
+'''
 
 

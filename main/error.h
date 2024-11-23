@@ -25,4 +25,17 @@ int calc_error(uint16_t input[8]) {
   return error;
 }
 
+void calc_norm(uint16_t input[8], uint16_t output[8]) {
+  uint16_t temp[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+  
+  for (int i = 0; i < 8; i++) {
+    temp[i] = input[i] - mins[i];
+    if (temp[i] <= 0) {
+      temp[i] = 0;
+    }
+    temp[i] = temp[i] * 1000 / maxs[i];
+    output[i] = temp[i]; // Store the result in the output array
+  }
+}
+
 #endif
