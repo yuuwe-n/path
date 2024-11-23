@@ -27,6 +27,16 @@ except Exception as e:
     exit()
 
 # Step 3: Plot the FFT
+
+# Calculate low-frequency energy
+low_freq_energy = np.sum(fft_magnitude[:10])  # Adjust range as needed
+print(f"Low-frequency energy: {low_freq_energy}")
+
+# Calculate high-frequency energy
+high_freq_energy = np.sum(fft_magnitude[40:])  # Adjust range for high frequencies
+print(f"High-frequency energy: {high_freq_energy}")
+
+
 plt.figure(figsize=(10, 6))
 plt.plot(frequencies[:len(frequencies)//2], fft_magnitude[:len(frequencies)//2])  # Only positive frequencies
 plt.title("Frequency Spectrum of Error Signal")
@@ -34,4 +44,6 @@ plt.xlabel("Normalized Frequency")
 plt.ylabel("Amplitude")
 plt.grid()
 plt.show()
+
+
 
