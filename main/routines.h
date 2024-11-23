@@ -26,7 +26,7 @@ void drive_car(bool inner_sensors = 0) { // not a looping functions
   store_sensors(sensor_values);
   
   pd_control(error);
-  store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
+  //store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
 }
 
 
