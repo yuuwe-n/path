@@ -30,15 +30,14 @@ void drive_car(bool inner_sensors = 0) { // not a looping functions
 }
 
 
-
 // LOOPING FUNCTIONS
 
-void duration(int threshold){
+void duration(int threshold, bool inner_sensors = 0){
   int ct = avg_encoder();
   threshold = threshold + ct;
   while (ct < threshold) {
     ct = avg_encoder();
-    drive_car();
+    drive_car(inner_sensors);
   }
 }
 
