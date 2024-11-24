@@ -28,7 +28,7 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
   store_error(error);
   store_cross(sensor_values);
   store_real_cross(sensor_values);
-  store_sensors(sensor_values);
+  // store_sensors(sensor_values);
 
   /*
   uint16_t norm_values[8];

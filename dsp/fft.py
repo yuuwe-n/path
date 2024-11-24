@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 file_path = 'input'  # Replace with your file path
 try:
     # Read the CSV file, ignoring headers and forcing conversion to numeric
-    errors = pd.read_csv(file_path, header=None).squeeze("columns")
+    errors = pd.read_csv(file_path, header=0).squeeze("columns")
     errors = pd.to_numeric(errors, errors='coerce').dropna().to_numpy()  # Drop non-numeric entries
 except Exception as e:
     print(f"Error reading CSV file: {e}")
@@ -38,13 +38,13 @@ print(f"High-frequency energy: {high_freq_energy}")
 
 # Filter FFT results to 0-20 Hz
 frequency_range = (frequencies >= 0) & (frequencies <= 20)  # Boolean mask for 0–20 Hz range
-frequencies_0_20 = frequencies[frequency_range]
-fft_magnitude_0_20 = fft_magnitude[frequency_range]
+frequencies = frequencies[frequency_range]
+fft_magnitude = fft_magnitude[frequency_range]
 
 # Plot the spectrum for 0–20 Hz
 plt.figure(figsize=(10, 6))
-plt.plot(frequencies_0_20, fft_magnitude_0_20)
-plt.title("Frequency Spectrum (0-20 Hz)")
+plt.plot(frequencies, fft_magnitude)
+plt.title("Frequency Spectrum (0-10 Hz)")
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("Amplitude")
 plt.grid()

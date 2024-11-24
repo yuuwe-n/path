@@ -12,7 +12,13 @@ void setup() {
   //routine_0();
 
   K_P = 0.10;
-  K_D = 0.30; // holy good
+  // K_D = 0.30 // holy good
+  K_D = 0.30; 
+
+  // big bug in code,
+
+  // l_speed = 0.10 * ...
+  // r_speed = 0.25 * ...
 
   while(true) {
     drive_car(0, 1);

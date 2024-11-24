@@ -3,7 +3,7 @@
 
 #include "cross.h"
 
-const int DATA_COUNT = 1000; // ~ the encoder count, maybe store every other data points
+const int DATA_COUNT = 10000; // ~ the encoder count, maybe store every other data points
 
 int count = 0;
 int count_cross = 0;
@@ -138,7 +138,7 @@ void output_5() { // output errors, crosspiece, real crosspiece, sensors
 void output() {
   while (true) {
     if (!digitalRead(bump_5)) {
-      output_5();
+      output_3();
     }
   }
 }
