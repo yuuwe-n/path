@@ -24,6 +24,10 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
   }
   
   int error = calc_error(sensor_values);
+
+  bool cross = detect_real_cross(sensor_values);
+  track_block(cross);
+  store_block();
   
   store_error(error);
   store_cross(sensor_values);

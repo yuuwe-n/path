@@ -15,17 +15,31 @@ void setup() {
   // K_D = 0.30 // holy good
   K_D = 0.30; 
 
-  // big bug in code,
 
-  // l_speed = 0.10 * ...
-  // r_speed = 0.25 * ...
+  // void drive_car(bool inner_sensors = 0, bool turn = 0)
+
+  // void drive_car(1, 1) , does not work for loops, loops rely on outter sensors
+
+  TURN_SCALAR = 0.20;
 
   while(true) {
     drive_car(0, 1);
+    
+    
     if (!digitalRead(bump_5)) {
-        stop_car();
-        delay(500);
-        output();
+      stop_car();
+      delay(500);
+
+      
+      output();
+      
+      /*
+      while (true) {
+        if (!digitalRead(bump_5)) {
+          Serial.println(block_count);
+        }
+      }
+      */
     }
   }
 }

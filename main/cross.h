@@ -38,4 +38,20 @@ bool detect_real_cross(uint16_t sensor_values[8]) {
   return consecutive_real_cross >= 2;
 }
 
+int block_count = 0;
+bool inside_block = false; // Tracks whether we are currently in a block
+
+void track_block(bool real_cross) {
+    if (real_cross) {
+        if (!inside_block) {
+            // Entering a new block
+            inside_block = true;
+            block_count++; // Increment block count for the new block
+        }
+    } else {
+        // Exiting a block
+        inside_block = false;
+    }
+}
+
 #endif

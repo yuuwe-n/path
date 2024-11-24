@@ -39,12 +39,30 @@ void store_cross(uint16_t sensor_values[8]) {
 void store_real_cross(uint16_t sensor_values[8]) {
   if (count_real_cross < DATA_COUNT) {
     if (detect_real_cross(sensor_values)) {
-        real_cross[count] = 1;
+        real_cross[count_real_cross] = 1;
     } else {
-      real_cross[count] = 0;
+      real_cross[count_real_cross] = 0;
     }
   }
   count_real_cross += 1;
+}
+
+int count_b = 0;
+byte block_arr[DATA_COUNT];
+
+void store_block() {
+  if (count_b < DATA_COUNT) {
+    block_arr[count_b] = block_count;
+  }
+  count_b += 1;
+}
+
+void output_block() {
+  for (int i = 0; i < DATA_COUNT; i++) {
+    Serial.print(block_arr[i]);
+    Serial.print(",");
+  }
+  Serial.println();
 }
 
 // to change data => pwm array, we can save memory
@@ -139,6 +157,7 @@ void output() {
   while (true) {
     if (!digitalRead(bump_5)) {
       output_3();
+      output_block();
     }
   }
 }

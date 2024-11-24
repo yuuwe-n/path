@@ -55,13 +55,13 @@ void pd_turn_control(int error) {
     }
 
     if (l_speed < 0) {
-      l_speed = abs(l_speed) * 0.10;
+      l_speed = abs(l_speed) * TURN_SCALAR;
       digitalWrite(left_dir_pin, HIGH); // backward
     } else {
         digitalWrite(left_dir_pin, LOW);  // forward
     }
     if (r_speed < 0) {
-        r_speed = abs(r_speed) * 0.10;
+        r_speed = abs(r_speed) * TURN_SCALAR;
         digitalWrite(right_dir_pin, HIGH); // backward
     } else {
         digitalWrite(right_dir_pin, LOW);  // forward

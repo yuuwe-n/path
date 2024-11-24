@@ -41,6 +41,7 @@ int maxs[8] = {1744,1321,1658,964,1155,1718,1489,1794};
 
 float K_P = 0;
 float K_D = 0;
+float TURN_SCALAR = 0.20;
 
 // float K_P = 0.01;
 // float K_D = 0.5;

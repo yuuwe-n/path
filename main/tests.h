@@ -94,8 +94,6 @@ void test_pd() {
 }
 
 
-
-
 // { K_P, K_D }
 float presets[3][2] = { 
 {0, 0} ,
