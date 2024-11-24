@@ -22,7 +22,11 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
   }
   
   int error = calc_error(sensor_values);
-  store_error(error, sensor_values); // STORES ERRORS & CROSS PIECE
+  //store_error(error, sensor_values); // STORES ERRORS & CROSS PIECE
+  
+  store_error(error);
+  store_cross(sensor_values);
+  store_real_cross(sensor_values);
   // store_sensors(sensor_values);
 
   /*
@@ -38,8 +42,7 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
     pd_control(error);
   }
 
-  
-  //store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
+  // store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
 }
 
 

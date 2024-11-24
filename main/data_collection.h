@@ -1,21 +1,26 @@
 #ifndef DATA_COLLECTION_H
 #define DATA_COLLECTION_H
 
-const int DATA_COUNT = 12000; // ~ the encoder count, maybe store every other data points
+const int DATA_COUNT = 1000; // ~ the encoder count, maybe store every other data points
 
 int count = 0;
-int count_pwm = 0;
 int count_cross = 0;
+int count_real_cross = 0;
+int count_pwm = 0;
+int count_sensors = 0;
 
-/*
+/*c
  * make data into a short
  * make cross piece into a bit or byte
- * 
  */
 
-short data[DATA_COUNT];
+short error_arr[DATA_COUNT];
 bool cross[DATA_COUNT];
 bool real_cross[DATA_COUNT];
+
+byte pwm[DATA_COUNT][2];
+short sensors[DATA_COUNT][8];
+
 
 // ADJUST CROSS_PIECE DETECTION THRESHOLD
 bool detect_crosspiece(uint16_t sensor_values[8]) {
@@ -54,32 +59,59 @@ bool detect_real_cross(uint16_t sensor_values[8]) {
   return consecutive_real_cross >= 2;
 }
 
+void store_error(int error) {
+  if (count < DATA_COUNT) {
+    error_arr[count] = error;
+  }
+  count += 1;
+}
+
+void store_cross(uint16_t sensor_values[8]) {
+  if (count_cross < DATA_COUNT) {
+    if (detect_crosspiece(sensor_values)) {
+        cross[count_cross] = 1;
+      } else {
+        cross[count_cross] = 0;
+    }
+  }
+  count_cross +=1;
+}
+
+void store_real_cross(uint16_t sensor_values[8]) {
+  if (count_real_cross < DATA_COUNT) {
+    if (detect_real_cross(sensor_values)) {
+        real_cross[count] = 1;
+    } else {
+      real_cross[count] = 0;
+    }
+  }
+  count_real_cross += 1;
+}
+
+/*
 void store_error(int error, uint16_t sensor_values[8]) {
   if (count < DATA_COUNT) {
-    data[count] = error;
+    error_arr[count] = error;
     
     if (detect_crosspiece(sensor_values)) {
       cross[count] = 1;
-      count_cross += 1;
     } else {
       cross[count] = 0;
-      count_cross = 0;
     }
     
     // Detect real cross using detect_real_cross
     if (detect_real_cross(sensor_values)) {
-      real_cross[count] = 1; // Mark as real cross if detected two times in a row
+      real_cross[count] = 1;
     } else {
-      real_cross[count] = 0; // Reset if not detected
+      real_cross[count] = 0;
     }
-
     count += 1;
   }
 }
+*/
 
-/*
+
 // to change data => pwm array, we can save memory
-byte pwm[DATA_COUNT][2];
 void store_pwm(int l_speed, int r_speed) {
   if (count_pwm < DATA_COUNT) {
     pwm[count_pwm][0] = l_speed;
@@ -87,11 +119,7 @@ void store_pwm(int l_speed, int r_speed) {
     count_pwm += 1;
   }
 }
-*/
 
-/*
-short sensors[DATA_COUNT][8];
-int count_sensors = 0;
 
 void store_sensors(uint16_t sensor_values[8]) {
   if (count_sensors < DATA_COUNT) {
@@ -101,118 +129,67 @@ void store_sensors(uint16_t sensor_values[8]) {
     count_sensors += 1;
   }
 }
-*/
 
-/*
-void output_data() {
-  while (true){
-    if (!digitalRead(bump_5)) {
-      for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.print(data[i]);
-        Serial.print(",");
-      }
-      Serial.println();
-      for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.print(cross[i]);
-        Serial.print(",");
-      }
-    }
-  }
-}
-*/
-
-/*
 void output_sensors() {
-  if (!digitalRead(bump_5)) {
-    for (int j = 0; j < 8; j++) {
+  for (int j = 0; j < 8; j++) {
       for (int i = 0; i < DATA_COUNT; i++) {
           Serial.print(sensors[i][j]);
           Serial.print(",");
       }
       Serial.println();
     }
-  }
 }
-*/
+
 
 void output_3() { // output error, cross piece, and real cross piece
-  while (true){
-    if (!digitalRead(bump_5)) {
-      for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.print(data[i]);
-        Serial.print(",");
-      }
-      Serial.println();
-      for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.print(cross[i]);
-        Serial.print(",");
-      }
-      Serial.println();
-      for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.print(real_cross[i]);
-        Serial.print(",");
-      }
-    }
+  for (int i = 0; i < DATA_COUNT; i++) {
+    Serial.print(error_arr[i]);
+    Serial.print(",");
+  }
+  Serial.println();
+  for (int i = 0; i < DATA_COUNT; i++) {
+    Serial.print(cross[i] * 1000);
+    Serial.print(",");
+  }
+  Serial.println();
+  for (int i = 0; i < DATA_COUNT; i++) {
+    Serial.print(real_cross[i] * 2000);
+    Serial.print(",");
   }
 }
 
-/*
-void output_5() {
-  while (true){
+
+void output_4() { // output errors, crosspiece, real crosspiece, sensors
+  for (int i = 0; i < DATA_COUNT; i++) {
+    Serial.print(error_arr[i]);
+    Serial.print(",");
+  }
+  Serial.println();
+  for (int i = 0; i < DATA_COUNT; i++) {
+    Serial.print(cross[i]*1000);
+    Serial.print(",");
+  }
+  Serial.println();
+  for (int i = 0; i < DATA_COUNT; i++) {
+    Serial.print(real_cross[i]*2000);
+    Serial.print(",");
+  }
+  Serial.println();
+  for (int j = 0; j < 8; j++) {
+    for (int i = 0; i < DATA_COUNT; i++) {
+        Serial.print(sensors[i][j]);
+        Serial.print(",");
+    }
+    Serial.println();
+  }
+}
+
+void output() {
+  while (true) {
     if (!digitalRead(bump_5)) {
-      for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.print(data[i]);
-        Serial.print(",");
-      }
-      Serial.println();
-      for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.print(cross[i]*1000);
-        Serial.print(",");
-      }
-      Serial.println();
-      for (int i = 0; i < DATA_COUNT; i++) {
-        Serial.print(real_cross[i]*1500);
-        Serial.print(",");
-      }
-      Serial.println();
-      for (int j = 0; j < 8; j++) {
-        for (int i = 0; i < DATA_COUNT; i++) {
-            Serial.print(sensors[i][j]);
-            Serial.print(",");
-        }
-        Serial.println();
-      }
+      output_3();
     }
   }
 }
-*/
-
-
-
-
-
-
-/*
-void output_all() { // output, cross piece, real cross piece, pwm values
-  while (true){
-    if (!digitalRead(bump_5)) {
-      for (int j = 0; j < 3; j++) {
-        for (int i = 0; i < DATA_COUNT; i++) {
-            Serial.print(data[i][j]);
-            Serial.print(",");
-        }
-        Serial.println();
-      }
-      for (int j = 0; j < 2; j++) {
-        for (int i = 0; i < DATA_COUNT; i++) {
-            Serial.print(pwm[i][j]);
-            Serial.print(",");
-        }
-        Serial.println();
-      }
-    }
-  }
-}
-*/
 
 #endif

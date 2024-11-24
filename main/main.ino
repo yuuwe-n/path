@@ -19,7 +19,7 @@ void setup() {
     if (!digitalRead(bump_5)) {
         stop_car();
         delay(500);
-        output_3();
+        output();
     }
   }
 }
