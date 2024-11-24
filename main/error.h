@@ -25,7 +25,7 @@ int calc_error(uint16_t input[8]) {
   return error;
 }
 
-void calc_norm(uint16_t input[8], uint16_t output[8]) {
+void calc_norm(uint16_t input[8], uint16_t output[8]) { // not working
   uint16_t temp[8] = {0, 0, 0, 0, 0, 0, 0, 0};
   
   for (int i = 0; i < 8; i++) {

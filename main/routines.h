@@ -3,6 +3,8 @@
 
 #include "pd_control.h"
 #include "data_collection.h"
+#include "cross.h"
+
 
 // ROUTINES DESIGNED FOR NAVIGATING TRACK
 
@@ -22,24 +24,22 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
   }
   
   int error = calc_error(sensor_values);
-  //store_error(error, sensor_values); // STORES ERRORS & CROSS PIECE
   
   store_error(error);
   store_cross(sensor_values);
   store_real_cross(sensor_values);
-  // store_sensors(sensor_values);
+  store_sensors(sensor_values);
 
   /*
   uint16_t norm_values[8];
   calc_norm(sensor_values, norm_values);
   store_sensors(norm_values);
   */
-
   
-  if ( turn ) {
-    pd_turn_control(error);
+  if ( turn ) { 
+    pd_turn_control(error); // set wheels to turn either direction
   } else {
-    pd_control(error);
+    pd_control(error); // wheels only go forward
   }
 
   // store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
