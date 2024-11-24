@@ -1,7 +1,7 @@
 #ifndef DATA_COLLECTION_H
 #define DATA_COLLECTION_H
 
-const int DATA_COUNT = 2000; // ~ the encoder count, maybe store every other data points
+const int DATA_COUNT = 12000; // ~ the encoder count, maybe store every other data points
 
 int count = 0;
 int count_pwm = 0;
@@ -28,23 +28,23 @@ bool detect_crosspiece(uint16_t sensor_values[8]) {
   return true;
 }
 
-int real_max = { 2500 , 1916 , 2344 , 1467 , 1727 , 2381 , 2130 , 2500 }
+int real_max[8] = { 2500 , 1916 , 2344 , 1467 , 1727 , 2381 , 2130 , 2500 };
 
 int consecutive_real_cross = 0;
 
 bool detect_real_cross(uint16_t sensor_values[8]) {
-  // Check if all sensor values are within 10% of real_max
-  bool within_threshold = true;
+  // Check if all sensor values are above 90% of real_max
+  bool above_threshold = true;
   for (int i = 0; i < 8; i++) {
-    int lower_bound = real_max[i] * 0.9; // 10% below real_max
-    int upper_bound = real_max[i] * 1.1; // 10% above real_max
-    if (sensor_values[i] < lower_bound || sensor_values[i] > upper_bound) {
-      within_threshold = false;
+    int lower_bound = real_max[i] * 0.9; // 90% of real_max
+    if (sensor_values[i] < lower_bound) { // Check if below the lower bound
+      above_threshold = false;
       break;
     }
   }
+
   // Increment or reset consecutive detection counter
-  if (within_threshold) {
+  if (above_threshold) {
     consecutive_real_cross += 1;
   } else {
     consecutive_real_cross = 0;
@@ -65,12 +65,14 @@ void store_error(int error, uint16_t sensor_values[8]) {
       cross[count] = 0;
       count_cross = 0;
     }
-    // Set data[count][2] to 1500 only for consecutive crosspiece detections
-    if (count_cross > 1) { // Trigger only on 2nd or higher consecutive detections
-      real_cross[count] = 1;
+    
+    // Detect real cross using detect_real_cross
+    if (detect_real_cross(sensor_values)) {
+      real_cross[count] = 1; // Mark as real cross if detected two times in a row
     } else {
-      real_cross[count] = 0; // Reset if not consecutive
+      real_cross[count] = 0; // Reset if not detected
     }
+
     count += 1;
   }
 }
@@ -87,7 +89,7 @@ void store_pwm(int l_speed, int r_speed) {
 }
 */
 
-
+/*
 short sensors[DATA_COUNT][8];
 int count_sensors = 0;
 
@@ -99,6 +101,7 @@ void store_sensors(uint16_t sensor_values[8]) {
     count_sensors += 1;
   }
 }
+*/
 
 /*
 void output_data() {
@@ -118,6 +121,7 @@ void output_data() {
 }
 */
 
+/*
 void output_sensors() {
   if (!digitalRead(bump_5)) {
     for (int j = 0; j < 8; j++) {
@@ -129,6 +133,7 @@ void output_sensors() {
     }
   }
 }
+*/
 
 void output_3() { // output error, cross piece, and real cross piece
   while (true){
@@ -151,6 +156,7 @@ void output_3() { // output error, cross piece, and real cross piece
   }
 }
 
+/*
 void output_5() {
   while (true){
     if (!digitalRead(bump_5)) {
@@ -179,6 +185,12 @@ void output_5() {
     }
   }
 }
+*/
+
+
+
+
+
 
 /*
 void output_all() { // output, cross piece, real cross piece, pwm values
