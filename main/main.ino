@@ -8,62 +8,72 @@
 
 void setup() {
   initialize();
+  /*
+  base_speed = 40; // when speed is very low, k_p and k_d dominate
+  K_P = 0.12;
+  K_D = 0.30;
+  TURN_SCALAR = 0.20;
 
-  //routine_0();
+  duration(3000, 0 , 1);
+  
+  stop_start(2000);
+  */
 
-  K_P = 0.10;
-  // K_D = 0.30 // holy good
-  K_D = 0.30; 
+/*
+  duration(500, 0, 0);
 
+  stop_start(2000);
 
+  duration(600,0,1);
+
+  stop_start(2000);
+
+  duration(500,0,0);
+
+  stop_start(2000);
+  */
+  
+  base_speed = 40;
+  K_P = 0.12;
+  //K_D = 0.50;
+  K_D = 0.60;
+  TURN_SCALAR = 0.25;
+  // TURN_SCALAR = 0.20;
+  
   // void drive_car(bool inner_sensors = 0, bool turn = 0)
 
   // void drive_car(1, 1) , does not work for loops, loops rely on outter sensors
 
-  TURN_SCALAR = 0.20;
+  bool loop1_flag = false;
+  bool turnaround_flag = false; // track_block == 3
 
   while(true) {
     drive_car(0, 1);
-    
+
+/*
+    if (block_count == 1 && !loop1_flag) {
+      loop1_flag = true;
+      set_forward();
+      analogWrite(left_pwm_pin, 40);
+      analogWrite(right_pwm_pin, 40);
+      delay(300);
+      stop_start(1000);
+    }
+    */
+
+    if (block_count == 1 && !turnaround_flag) { 
+      // Only execute if track_block == 3 and the flag is false
+      turnaround_flag = true; // Set the flag to true to prevent re-execution
+      half_donut(base_speed); // Replace with your desired function
+    }
     
     if (!digitalRead(bump_5)) {
       stop_car();
       delay(500);
-
       
       output();
-      
-      /*
-      while (true) {
-        if (!digitalRead(bump_5)) {
-          Serial.println(block_count);
-        }
-      }
-      */
     }
   }
-}
-
-
-void routine_0() {
-
-  // duration(int threshold, bool inner_sensors = 0, bool turn = 0)
-  // donut(base_speed); 
-  // loop_1 ( int threshold, int spd, bool dir); 
-
-  K_P = 0.10;
-  K_D = 0.35;
-  
-  duration(550, 0 , 0);
-  stop_start(2000);
-  loop_1(500, base_speed, 1);
-  stop_start(2000);
-
-  base_speed = 20;
-  duration(500, 1, 0);
-  stop_start(2000);
-  base_speed = 40;
-
 }
 
   /*
@@ -76,7 +86,7 @@ void routine_0() {
 void loop() {
   //drive_car();
   
-  test_pd();
+  //test_pd();
 }
 
 /* FUNCTIONS

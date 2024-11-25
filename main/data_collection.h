@@ -59,7 +59,7 @@ void store_block() {
 
 void output_block() {
   for (int i = 0; i < DATA_COUNT; i++) {
-    Serial.print(block_arr[i]);
+    Serial.print(block_arr[i] * 1000);
     Serial.print(",");
   }
   Serial.println();

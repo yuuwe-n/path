@@ -46,50 +46,50 @@ void test_outputs(bool nlsp = false) { // looping function
 
 void variate_kd() {
   if (!digitalRead(bump_5)) {
-    K_D = 1;
+    K_D = 0.70;
   }
   if (!digitalRead(bump_4)) {
-    K_D = 0.8;
+    K_D = 0.60;
   }
   if (!digitalRead(bump_3)) {
-    K_D = 0.6;
+    K_D = 0.50;
   }
   if (!digitalRead(bump_2)) {
-    K_D = 0.4;
+    K_D = 0.40;
   }
   if (!digitalRead(bump_1)) {
-    K_D = 0.2;
+    K_D = 0.30;
   }
   if (!digitalRead(bump_0)) {
-    K_D = 0.1;
+    K_D = 0.20;
   }
 }
 
 void variate_kp() {
   if (!digitalRead(bump_5)) {
-    K_P = 0.25;
+    K_P = 0.18;
   }
   if (!digitalRead(bump_4)) {
-    K_P = 0.20;
+    K_P = 0.15;
   }
   if (!digitalRead(bump_3)) {
-    K_P = 0.15;
+    K_P = 0.13;
   }
   if (!digitalRead(bump_2)) {
     K_P = 0.10;
   }
   if (!digitalRead(bump_1)) {
-    K_P = 0.05;
+    K_P = 0.09;
   }
   if (!digitalRead(bump_0)) {
-    K_P = 0.01;
+    K_P = 0.08;
   }
 }
 
 void test_pd() {
   //K_P = 0.01;
-  K_D = 0.30;
-  variate_kp();
+  // K_D = 0.30;
+  variate_kd();
   drive_car(0, 1);
 }
 
