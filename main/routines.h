@@ -28,19 +28,20 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
 
   uint16_t norm_values[8];
   calc_norm(sensor_values, norm_values);
-  
-  // store_sensors(norm_values);
 
   
+  store_sensors(norm_values);
+  
+  // detects consecutive cross values
   bool cross = detect_cross(norm_values);
-  store_cross(cross);
   track_block(cross);
   store_block();
-  
+
+  // detect non consecutive 
+  bool c = detect_c(norm_values);
+  store_cross(c);
   
   store_error(error);
-  //store_real_cross(sensor_values);
-
   
   // store_sensors(sensor_values);
 
@@ -50,7 +51,7 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
   } else {
     pd_control(error); // wheels only go forward
   }
-  store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
+  // store_pwm(l_speed,r_speed); // must be after pd_control, stores pwm speeds
 }
 
 

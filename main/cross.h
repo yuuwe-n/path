@@ -6,9 +6,6 @@
 int consecutive_cross = 0;
 
 bool detect_c(uint16_t norm_values[8]) {
-  // Check if inner sensors 6 (indices 1 to 6) are greater than 999;
-  // check if inner 4 sensors (2 to 5 are greater than 999)
-
   bool above_threshold = true;
   
   for (int i = 2; i <= 5; i++) {
@@ -17,9 +14,9 @@ bool detect_c(uint16_t norm_values[8]) {
       break;
     }
   }
-
-  return true;
+  return above_threshold;
 }
+
 
 bool detect_cross(uint16_t norm_values[8]) {
   // Check if inner sensors 6 (indices 1 to 6) are greater than 999;

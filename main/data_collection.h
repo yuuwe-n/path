@@ -3,7 +3,7 @@
 
 #include "cross.h"
 
-const int DATA_COUNT = 8000; // ~ the encoder count, maybe store every other data points
+const int DATA_COUNT = 2000; // ~ the encoder count, maybe store every other data points
 
 int count = 0;
 int count_cross = 0;
@@ -14,7 +14,7 @@ int count_b = 0;
 
 short error_arr[DATA_COUNT];
 bool cross_arr[DATA_COUNT];
-bool real_cross[DATA_COUNT];
+// bool real_cross[DATA_COUNT];
 byte block_arr[DATA_COUNT];
 
 int8_t pwm[DATA_COUNT][2]; // arrays dont get allocated unless used in function
@@ -38,6 +38,7 @@ void store_cross(bool cross) {
   count_cross +=1;
 }
 
+/*
 void store_real_cross(uint16_t sensor_values[8]) {
   if (count_real_cross < DATA_COUNT) {
     if (detect_real_cross(sensor_values)) {
@@ -48,6 +49,7 @@ void store_real_cross(uint16_t sensor_values[8]) {
   }
   count_real_cross += 1;
 }
+*/
 
 void store_block() {
   if (count_b < DATA_COUNT) {
@@ -101,6 +103,7 @@ void output_cross() {
   Serial.println();
 }
 
+/*
 void output_real_cross() {
   for (int i = 0; i < DATA_COUNT; i++) {
     Serial.print(real_cross[i] * 2000);
@@ -108,6 +111,7 @@ void output_real_cross() {
   }
   Serial.println();
 }
+*/
 
 void output_block() {
   for (int i = 0; i < DATA_COUNT; i++) {
@@ -141,28 +145,6 @@ void output_pwm() {
 }
 
 
-void output_3() { // output error, cross piece, and real cross piece
-  output_error();
-  output_cross();
-  output_real_cross();
-}
-
-
-void output_4() { // output errors, crosspiece, real crosspiece, sensors
-  output_error();
-  output_cross();
-  output_real_cross();
-  output_sensors();
-}
-
-void output_5() { // output errors, crosspiece, real crosspiece, sensors
-  output_error();
-  output_cross();
-  output_real_cross();
-  output_sensors();
-  output_pwm();
-}
-
 void output() {
   while (true) {
     if (!digitalRead(bump_5)) {
@@ -170,8 +152,8 @@ void output() {
       output_cross();
       //output_real_cross();
       output_block();
-      output_pwm();
-      // output_sensors();
+      // output_pwm();
+      output_sensors();
     }
   }
 }
