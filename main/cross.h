@@ -17,11 +17,20 @@ bool detect_c(uint16_t norm_values[8]) {
   return above_threshold;
 }
 
+int cross_2 = 0;
+bool detect_cross_2(uint16_t norm_values[8]) {
+  bool above_threshold = true;
+  
+  for (int i = 0; i <= 4; i++) {
+    if (norm_values[i] < 1000) {
+      above_threshold = false;
+      break;
+    }
+  }
+  return above_threshold;
+}
 
 bool detect_cross(uint16_t norm_values[8]) {
-  // Check if inner sensors 6 (indices 1 to 6) are greater than 999;
-  // check if inner 4 sensors (2 to 5 are greater than 999)
-
   bool above_threshold = true;
   
   for (int i = 2; i <= 5; i++) {
@@ -36,51 +45,11 @@ bool detect_cross(uint16_t norm_values[8]) {
     consecutive_cross = 0;
   }
 
-  // Return true if detected two times in a row
   return consecutive_cross >= 2;
 }
 
-int real_max[8] = { 2500 , 1916 , 2344 , 1467 , 1727 , 2381 , 2130 , 2500 };
 
-int consecutive_real_cross = 0;
 
-bool detect_real_cross(uint16_t sensor_values[8]) {
-  // Check if all sensor values are above 95% of real_max
-  bool above_threshold = true;
-  for (int i = 0; i < 8; i++) {
-    int lower_bound = real_max[i] * 0.95; // 95% of real_max
-    if (sensor_values[i] < lower_bound) { // Check if below the lower bound
-      above_threshold = false;
-      break;
-    }
-  }
-
-  // Increment or reset consecutive detection counter
-  if (above_threshold) {
-    consecutive_real_cross += 1;
-  } else {
-    consecutive_real_cross = 0;
-  }
-
-  // Return true if detected two times in a row
-  return consecutive_real_cross >= 2;
-}
-
-/*
-bool detect_real_cross(uint16_t sensor_values[8]) {
-  // Check if all sensor values are above 90% of real_max
-  bool above_threshold = true;
-  for (int i = 0; i < 8; i++) {
-    int lower_bound = real_max[i] * 0.95; // 90% of real_max
-    if (sensor_values[i] < lower_bound) { // Check if below the lower bound
-      above_threshold = false;
-      break;
-    }
-  }
-
-  return above_threshold;
-}
-*/
 
 int block_count = 0;
 bool inside_block = false; // Tracks whether we are currently in a block
@@ -97,5 +66,44 @@ void track_block(bool real_cross) {
         inside_block = false;
     }
 }
+
+
+/*
+bool detect_c(uint16_t norm_values[8]) {
+  int count = 0;
+
+  // Check sensors from index 0 to 7 (non-inclusive of 8)
+  for (int i = 0; i < 8; i++) {
+    if (norm_values[i] >= 1000) {
+      count++;
+      if (count >= 4) {
+        return true; // Return true as soon as 4 sensors meet the condition
+      }
+    }
+  }
+  return false; // Less than 4 sensors have values >= 1000
+}
+
+bool detect_cross(uint16_t norm_values[8]) {
+  int count = 0;
+
+  // Count sensors with values >= 1000 from index 0 to 7
+  for (int i = 0; i < 8; i++) {
+    if (norm_values[i] >= 1000) {
+      count++;
+    }
+  }
+
+  // Check if at least 4 sensors meet the condition
+  if (count >= 4) {
+    consecutive_cross += 1; // Increment consecutive count
+  } else {
+    consecutive_cross = 0; // Reset if condition is not met
+  }
+
+  // Return true if detected two times in a row
+  return consecutive_cross >= 2;
+}
+*/
 
 #endif

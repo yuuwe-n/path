@@ -39,7 +39,8 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
 
   // detect non consecutive 
   bool c = detect_c(norm_values);
-  store_cross(c);
+  bool c2 = detect_cross_2(norm_values);
+  store_cross(c2);
   
   store_error(error);
   

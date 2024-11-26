@@ -86,26 +86,36 @@ void variate_kp() {
   }
 }
 
-void test_pd() {
-  //K_P = 0.01;
-  // K_D = 0.30;
-  variate_kd();
-  drive_car(0, 1);
+void variate_turn_scalar() {
+  if (!digitalRead(bump_5)) {
+    TURN_SCALAR = 0.30;
+  }
+  if (!digitalRead(bump_4)) {
+    TURN_SCALAR = 0.25;
+  }
+  if (!digitalRead(bump_3)) {
+    TURN_SCALAR = 0.20;
+  }
+  if (!digitalRead(bump_2)) {
+    TURN_SCALAR = 0.15; // this iss ur minimum about the best
+  }
+  if (!digitalRead(bump_1)) {
+    TURN_SCALAR = 0.13;
+  }
+  if (!digitalRead(bump_0)) {
+    TURN_SCALAR = 0.10;
+  }
 }
 
+void test_pd() {
+  // K_P = 0.01;
+  // K_D = 0.30;
+  // variate_kp();
+  // variate_kd();
+  variate_turn_scalar();
+  drive_car(0, 1);
 
-// { K_P, K_D }
-float presets[3][2] = { 
-{0, 0} ,
-{0.2, 0.4} ,
-{0.25, 0.4}
-};
-
-void test_presets() {
-  K_P = presets[0][0]; // row, column
-  K_D = presets[0][1];
-  variate_kp();
-  drive_car();
+  // k_d = 0.20 worked best
 }
 
 #endif
