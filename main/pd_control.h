@@ -9,7 +9,7 @@ int calc_p(int error) {
 }
 
 int calc_d(int error, int prev_error) {
-  int d = K_D *  (error - prev_error);
+  int d = K_D *  (prev_error - error); //error - prev_error
   return d;
 }
 

@@ -5,6 +5,7 @@
 
 int consecutive_cross = 0;
 
+// check inner 4 sensors
 bool detect_c(uint16_t norm_values[8]) {
   bool above_threshold = true;
   
@@ -30,6 +31,7 @@ bool detect_cross_2(uint16_t norm_values[8]) {
   return above_threshold;
 }
 
+// check inner 4 sensors
 bool detect_cross(uint16_t norm_values[8]) {
   bool above_threshold = true;
   

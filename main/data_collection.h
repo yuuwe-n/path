@@ -3,13 +3,16 @@
 
 #include "cross.h"
 
-const int DATA_COUNT = 2000; // ~ the encoder count, maybe store every other data points
+const int DATA_COUNT = 2500; // ~ the encoder count, maybe store every other data points
 
 int count = 0;
+int count_encoder = 0;
 int count_cross = 0;
 int count_pwm = 0;
 int count_data = 0;
 int count_block = 0;
+
+short encoder_arr[DATA_COUNT];
 
 short error_arr[DATA_COUNT];
 
@@ -35,6 +38,14 @@ void store_cross(bool cross) {
     }
   }
   count_cross +=1;
+}
+
+
+void store_encoder(int encoder) {
+  if (count_encoder < DATA_COUNT) {
+    encoder_arr[count_encoder] = avg_encoder();
+  }
+  count_encoder += 1;
 }
 
 void store_block() {
@@ -108,6 +119,14 @@ void output_data() {
   Serial.println();
 }
 
+void output_encoder() {
+  for (int i = 0; i < DATA_COUNT; i++) {
+    Serial.print(encoder_arr[i]);
+    Serial.print(",");
+  }
+  Serial.println();
+}
+
 void output_pwm() {
   for (int j = 0; j < 2; j++) {
       for (int i = 0; i < DATA_COUNT; i++) {
@@ -123,12 +142,14 @@ void output_pwm() {
 void output() {
   while (true) {
     if (!digitalRead(bump_5)) {
+      // output_encoder();
+
       output_error();
       output_cross();
       output_block();
       
-      // output_pwm();
-      output_data();
+      //output_pwm();
+      // output_data();
     }
   }
 }

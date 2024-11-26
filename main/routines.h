@@ -24,28 +24,29 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
   }
   
   int error = calc_error(sensor_values);
+  store_error(error);
+
+  // store_encoder(avg_encoder());
 
 
   uint16_t norm_values[8];
   calc_norm(sensor_values, norm_values);
 
+  // store_data(norm_values);
   
-  store_data(norm_values);
-  
-  // detects consecutive cross values
+  // detects consecutive cross values from norm_values
   bool cross = detect_cross(norm_values);
   track_block(cross);
   store_block();
 
   // detect non consecutive 
   bool c = detect_c(norm_values);
-  bool c2 = detect_cross_2(norm_values);
-  store_cross(c2);
+  // bool c2 = detect_cross_2(norm_values);
+  store_cross(c);
   
-  store_error(error);
+  
   
   // store_data(sensor_values);
-
   
   if ( turn ) { 
     pd_turn_control(error); // set wheels to turn either direction
@@ -58,7 +59,7 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
 
 // LOOPING FUNCTIONS
 
-void duration(int threshold, bool inner_sensors = 0, bool turn = 0){
+void duration(int threshold, bool inner_sensors = 0, bool turn = 1){
   int ct = avg_encoder();
   threshold = threshold + ct;
   while (ct < threshold) {
