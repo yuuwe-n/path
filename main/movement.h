@@ -38,6 +38,17 @@ void half_donut(int spd, bool dir = true) {
   rotate(364, spd, dir); // test how many encoder counts is one revolution
 }
 
+void move_forward(int threshold, int spd) {
+  int ct = avg_encoder();
+  threshold = threshold + ct;
+  while (ct < threshold) {
+    set_forward();
+    ct = avg_encoder();
+    analogWrite(left_pwm_pin, spd);
+    analogWrite(right_pwm_pin, spd);
+  }
+}
+
 void loop_1(int threshold, int spd, bool dir = 1) { // threshold (in encoder counts)
 
   int ct = avg_encoder();

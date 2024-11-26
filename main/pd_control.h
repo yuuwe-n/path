@@ -38,6 +38,8 @@ void pd_control(int error) {
     prev_error = error;
 }
 
+bool pwm_dir[2] = {0, 0};
+
 void pd_turn_control(int error) {
    //*  error > 0 : track is to the LEFT
    //* error < 0 : track is to the RIGHT
@@ -57,14 +59,18 @@ void pd_turn_control(int error) {
     if (l_speed < 0) {
       l_speed = abs(l_speed) * TURN_SCALAR;
       digitalWrite(left_dir_pin, HIGH); // backward
+      pwm_dir[0] = 1;
     } else {
-        digitalWrite(left_dir_pin, LOW);  // forward
+      digitalWrite(left_dir_pin, LOW);  // forward
+      pwm_dir[0] = 0;
     }
     if (r_speed < 0) {
         r_speed = abs(r_speed) * TURN_SCALAR;
         digitalWrite(right_dir_pin, HIGH); // backward
+        pwm_dir[1] = 1;
     } else {
         digitalWrite(right_dir_pin, LOW);  // forward
+        pwm_dir[1] = 0;
     }
 
     l_speed = constrain(l_speed, 0 , max_speed);

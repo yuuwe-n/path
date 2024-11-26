@@ -34,8 +34,29 @@ void calc_norm(uint16_t input[8], uint16_t output[8]) { // not working
       temp[i] = 0;
     }
     temp[i] = temp[i] * 1000 / maxs[i];
+
+    if (temp[i] >= 1000) {
+      temp[i] = 1000;
+    }
+
     output[i] = temp[i]; // Store the result in the output array
   }
 }
+
+
+/*
+void calc_norm(uint16_t input[8], uint16_t output[8]) { // not working
+  uint16_t temp[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+  
+  for (int i = 0; i < 8; i++) {
+    temp[i] = input[i] - mins[i];
+    if (temp[i] <= 0) {
+      temp[i] = 0;
+    }
+    temp[i] = temp[i] * 1000 / maxs[i];
+    output[i] = temp[i]; // Store the result in the output array
+  }
+}
+*/
 
 #endif

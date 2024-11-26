@@ -2,14 +2,45 @@
 #define CROSS_H
 
 // ADJUST CROSS_PIECE DETECTION THRESHOLD
-bool detect_crosspiece(uint16_t sensor_values[8]) {
-  // Check if all inner sensors (indices 2 to 5) are greater than 2400
+
+int consecutive_cross = 0;
+
+bool detect_c(uint16_t norm_values[8]) {
+  // Check if inner sensors 6 (indices 1 to 6) are greater than 999;
+  // check if inner 4 sensors (2 to 5 are greater than 999)
+
+  bool above_threshold = true;
+  
   for (int i = 2; i <= 5; i++) {
-    if (sensor_values[i] <= 2400) {
-      return false;
+    if (norm_values[i] < 1000) {
+      above_threshold = false;
+      break;
     }
   }
+
   return true;
+}
+
+bool detect_cross(uint16_t norm_values[8]) {
+  // Check if inner sensors 6 (indices 1 to 6) are greater than 999;
+  // check if inner 4 sensors (2 to 5 are greater than 999)
+
+  bool above_threshold = true;
+  
+  for (int i = 2; i <= 5; i++) {
+    if (norm_values[i] < 1000) {
+      above_threshold = false;
+      break;
+    }
+  }
+  if (above_threshold) {
+    consecutive_cross += 1;
+  } else {
+    consecutive_cross = 0;
+  }
+
+  // Return true if detected two times in a row
+  return consecutive_cross >= 2;
 }
 
 int real_max[8] = { 2500 , 1916 , 2344 , 1467 , 1727 , 2381 , 2130 , 2500 };

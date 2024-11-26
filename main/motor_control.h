@@ -27,19 +27,19 @@ void set_left() {
   digitalWrite(right_dir_pin,LOW); // forward
 }
 
-void stop_car() { // stop car
+void stop_car() { // stop car , this doesn't really stop car, it just sets pwm_speed to zero
   analogWrite(left_pwm_pin, 0);
   analogWrite(right_pwm_pin, 0);
   digitalWrite(LED_Y, HIGH); // turn on yellow LED 
 }
 
-void start_car() { // start car
-  analogWrite(left_pwm_pin, 1);
-  analogWrite(right_pwm_pin, 1);
-  digitalWrite(LED_Y, LOW); // turn on yellow LED
+void start_car(int spd = base_speed) { // start car
+  analogWrite(left_pwm_pin, spd);
+  analogWrite(right_pwm_pin, spd);
+  digitalWrite(LED_Y, LOW);
 }
 
-void stop_start(int t) {
+void stop_start(int t) { // for some time
   stop_car();
   delay(t);
   start_car();
