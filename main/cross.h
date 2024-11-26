@@ -54,8 +54,8 @@ bool detect_cross(uint16_t norm_values[8]) {
 int block_count = 0;
 bool inside_block = false; // Tracks whether we are currently in a block
 
-void track_block(bool real_cross) {
-    if (real_cross) {
+void track_block(bool cross) {
+    if (cross) {
         if (!inside_block) {
             // Entering a new block
             inside_block = true;

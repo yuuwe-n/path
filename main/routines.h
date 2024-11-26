@@ -30,7 +30,7 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
   calc_norm(sensor_values, norm_values);
 
   
-  store_sensors(norm_values);
+  store_data(norm_values);
   
   // detects consecutive cross values
   bool cross = detect_cross(norm_values);
@@ -44,7 +44,7 @@ void drive_car(bool inner_sensors = 0, bool turn = 0) { // not a looping functio
   
   store_error(error);
   
-  // store_sensors(sensor_values);
+  // store_data(sensor_values);
 
   
   if ( turn ) { 

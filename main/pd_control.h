@@ -38,7 +38,7 @@ void pd_control(int error) {
     prev_error = error;
 }
 
-bool pwm_dir[2] = {0, 0};
+bool pwm_dir[2] = {0, 0}; // allows to collect data magnitude and direction of pwm
 
 void pd_turn_control(int error) {
    //*  error > 0 : track is to the LEFT

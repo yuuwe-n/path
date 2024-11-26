@@ -18,6 +18,36 @@ void test_encoder() {
   Serial.println();
 }
 
+int encoder_counts = 0;
+int final_count = 0;
+void test_rotation() {
+  resetEncoderCount_left();
+  resetEncoderCount_right();
+  
+  analogWrite(left_pwm_pin, 25);
+  analogWrite(right_pwm_pin, 25);
+  set_right();
+
+  
+  delay(2000);
+  while(true) {
+    encoder_counts = avg_encoder();
+    if (!digitalRead(bump_5)){
+      analogWrite(LED_Y, HIGH);
+      stop_car();
+      break;
+    }
+  }
+  final_count = encoder_counts;
+
+  while(true) {
+    Serial.println(final_count);
+  }
+
+  delay(2000);
+}
+
+
 void test_outputs(bool nlsp = false) { // looping function
   set_nlsp(nlsp); // TURN OFF WHEELS
 

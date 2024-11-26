@@ -11,10 +11,10 @@ void setup() {
   
   base_speed = 40;
   K_P = 0.15;
-  K_D = 0.50;
+  K_D = 0.20;
   TURN_SCALAR = 0.15; // this is the best i could find ( range from 0.10 - > max 0.30 ,,, 0.15 seems best)
 
-  // routine_0();
+  routine_0();
 }
 
 void routine_0() {
@@ -61,7 +61,7 @@ void routine_0() {
 void loop() {
   //drive_car();
   
-  test_pd();
+  //test_pd();
 }
 
 /* FUNCTIONS

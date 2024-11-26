@@ -7,18 +7,17 @@ const int DATA_COUNT = 2000; // ~ the encoder count, maybe store every other dat
 
 int count = 0;
 int count_cross = 0;
-int count_real_cross = 0;
 int count_pwm = 0;
-int count_sensors = 0;
-int count_b = 0;
+int count_data = 0;
+int count_block = 0;
 
 short error_arr[DATA_COUNT];
+
 bool cross_arr[DATA_COUNT];
-// bool real_cross[DATA_COUNT];
 byte block_arr[DATA_COUNT];
 
 int8_t pwm[DATA_COUNT][2]; // arrays dont get allocated unless used in function
-short sensors[DATA_COUNT][8];
+short data[DATA_COUNT][8];
 
 void store_error(int error) {
   if (count < DATA_COUNT) {
@@ -38,24 +37,11 @@ void store_cross(bool cross) {
   count_cross +=1;
 }
 
-/*
-void store_real_cross(uint16_t sensor_values[8]) {
-  if (count_real_cross < DATA_COUNT) {
-    if (detect_real_cross(sensor_values)) {
-        real_cross[count_real_cross] = 1;
-    } else {
-      real_cross[count_real_cross] = 0;
-    }
-  }
-  count_real_cross += 1;
-}
-*/
-
 void store_block() {
-  if (count_b < DATA_COUNT) {
-    block_arr[count_b] = block_count;
+  if (count_block < DATA_COUNT) {
+    block_arr[count_block] = block_count;
   }
-  count_b += 1;
+  count_block += 1;
 }
 
 // to change data => pwm array, we can save memory
@@ -78,12 +64,12 @@ void store_pwm(int l_speed, int r_speed) {
 }
 
 
-void store_sensors(uint16_t sensor_values[8]) {
-  if (count_sensors < DATA_COUNT) {
+void store_data(uint16_t sensor_values[8]) {
+  if (count_data < DATA_COUNT) {
     for (int i = 0; i < 8; i++) {
-      sensors[count_sensors][i] = sensor_values[i];
+      data[count_data][i] = sensor_values[i];
     }
-    count_sensors += 1;
+    count_data += 1;
   }
 }
 
@@ -103,16 +89,6 @@ void output_cross() {
   Serial.println();
 }
 
-/*
-void output_real_cross() {
-  for (int i = 0; i < DATA_COUNT; i++) {
-    Serial.print(real_cross[i] * 2000);
-    Serial.print(",");
-  }
-  Serial.println();
-}
-*/
-
 void output_block() {
   for (int i = 0; i < DATA_COUNT; i++) {
     Serial.print(block_arr[i] * 1000);
@@ -121,11 +97,10 @@ void output_block() {
   Serial.println();
 }
 
-
-void output_sensors() {
+void output_data() {
   for (int j = 0; j < 8; j++) {
       for (int i = 0; i < DATA_COUNT; i++) {
-          Serial.print(sensors[i][j]);
+          Serial.print(data[i][j]);
           Serial.print(",");
       }
       Serial.println();
@@ -150,10 +125,10 @@ void output() {
     if (!digitalRead(bump_5)) {
       output_error();
       output_cross();
-      //output_real_cross();
       output_block();
+      
       // output_pwm();
-      output_sensors();
+      output_data();
     }
   }
 }
