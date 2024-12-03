@@ -28,7 +28,7 @@ void rotate(int threshold, int spd, bool dir) { // threshold (in encoder counts)
 
 // spin 360 degrees
 void donut(int spd, bool dir = true) {
-  rotate(728, spd, dir); // test how many encoder counts is one revolution
+  rotate(735, spd, dir); // test how many encoder counts is one revolution
 }
 
 // spin 180 degrees
@@ -45,7 +45,9 @@ void move_forward(int threshold, int spd) {
     ct = avg_encoder();
     analogWrite(left_pwm_pin, spd);
     analogWrite(right_pwm_pin, spd);
+    analogWrite(LED_B, HIGH);
   }
+  analogWrite(LED_B, LOW);
 }
 
 #endif

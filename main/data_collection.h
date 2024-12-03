@@ -3,7 +3,9 @@
 
 #include "cross.h"
 
-const int DATA_COUNT = 10000; // ~ the encoder count, maybe store every other data points
+const int DATA_COUNT = 9000; // ~ the encoder count, maybe store every other data points
+
+// max data count should be above 8200
 
 int count = 0;
 int count_encoder = 0;
@@ -142,10 +144,10 @@ void output_pwm() {
 void output() {
   while (true) {
     if (!digitalRead(bump_5)) {
-      // output_encoder();
+      output_encoder();
 
       output_error();
-      output_cross();
+      // output_cross();
       output_block();
       
       // output_pwm();
