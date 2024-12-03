@@ -76,76 +76,75 @@ void test_outputs(bool nlsp = false) { // looping function
 
 void variate_kd() {
   if (!digitalRead(bump_5)) {
-    K_D = 0.70;
+    K_D = 1.5;
   }
   if (!digitalRead(bump_4)) {
-    K_D = 0.60;
+    K_D = 1.0;
   }
   if (!digitalRead(bump_3)) {
-    K_D = 0.50;
+    K_D = 0.80;
   }
   if (!digitalRead(bump_2)) {
-    K_D = 0.40;
+    K_D = 0.70;
   }
   if (!digitalRead(bump_1)) {
-    K_D = 0.30;
+    K_D = 0.50;
   }
   if (!digitalRead(bump_0)) {
-    K_D = 0.20;
+    K_D = 0.00;
   }
 }
 
 void variate_kp() {
   if (!digitalRead(bump_5)) {
-    K_P = 0.18;
+    K_P = 0.085;
   }
   if (!digitalRead(bump_4)) {
-    K_P = 0.15;
+    K_P = 0.080;
   }
-  if (!digitalRead(bump_3)) {
-    K_P = 0.13;
+  if (!digitalRead(bump_3)) { 
+    K_P = 0.075;
   }
-  if (!digitalRead(bump_2)) {
-    K_P = 0.10;
+  if (!digitalRead(bump_2)) {  
+    K_P = 0.070;
   }
-  if (!digitalRead(bump_1)) {
-    K_P = 0.09;
+  if (!digitalRead(bump_1)) { 
+    K_P = 0.065;
   }
   if (!digitalRead(bump_0)) {
-    K_P = 0.08;
+    K_P = 0.00;
   }
 }
 
 void variate_turn_scalar() {
   if (!digitalRead(bump_5)) {
-    TURN_SCALAR = 0.30;
+    TURN_SCALAR = 0.80;
   }
   if (!digitalRead(bump_4)) {
-    TURN_SCALAR = 0.25;
+    TURN_SCALAR = 0.70;
   }
   if (!digitalRead(bump_3)) {
-    TURN_SCALAR = 0.20;
+    TURN_SCALAR = 0.60;
   }
   if (!digitalRead(bump_2)) {
-    TURN_SCALAR = 0.15; // this iss ur minimum about the best
+    TURN_SCALAR = 0.50; // this iss ur minimum about the best
   }
   if (!digitalRead(bump_1)) {
-    TURN_SCALAR = 0.13;
+    TURN_SCALAR = 0.40;
   }
   if (!digitalRead(bump_0)) {
-    TURN_SCALAR = 0.10;
+    TURN_SCALAR = 0.00;
   }
 }
 
 void test_pd() {
-  // K_P = 0.01;
-  // K_D = 0.30;
+  
   // variate_kp();
   // variate_kd();
-  variate_turn_scalar();
-  drive_car(0, 1);
+  // variate_turn_scalar();
 
-  // k_d = 0.20 worked best
+  
+  drive_car(0, 1);
 }
 
 #endif

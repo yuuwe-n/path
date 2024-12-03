@@ -3,7 +3,7 @@
 
 #include "cross.h"
 
-const int DATA_COUNT = 2500; // ~ the encoder count, maybe store every other data points
+const int DATA_COUNT = 10000; // ~ the encoder count, maybe store every other data points
 
 int count = 0;
 int count_encoder = 0;
@@ -148,8 +148,8 @@ void output() {
       output_cross();
       output_block();
       
-      //output_pwm();
-      // output_data();
+      // output_pwm();
+      //output_data();
     }
   }
 }

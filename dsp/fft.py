@@ -30,14 +30,16 @@ except Exception as e:
 
 # Calculate low-frequency energy
 low_freq_energy = np.sum(fft_magnitude[:10])  # Adjust range as needed
-print(f"Low-frequency energy: {low_freq_energy}")
+print(f"Low-frequency energy 0-10hz:")
+print(low_freq_energy)
 
 # Calculate high-frequency energy
-high_freq_energy = np.sum(fft_magnitude[40:])  # Adjust range for high frequencies
-print(f"High-frequency energy: {high_freq_energy}")
+high_freq_energy = np.sum(fft_magnitude[10:100])  # Adjust range for high frequencies
+print(f"High-frequency energy 10hz - 100hz")
+print(high_freq_energy);
 
 # Filter FFT results to 0-20 Hz
-frequency_range = (frequencies >= 0) & (frequencies <= 20)  # Boolean mask for 0–20 Hz range
+frequency_range = (frequencies >= 0) & (frequencies <= 10)  # Boolean mask for 0–20 Hz range
 frequencies = frequencies[frequency_range]
 fft_magnitude = fft_magnitude[frequency_range]
 

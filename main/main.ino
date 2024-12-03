@@ -9,17 +9,77 @@
 void setup() {
   initialize();
 
-  // lower k_p , raise k_d
   
   base_speed = 30;
-  K_P = 0.14; // 0.12 -> 0.14
-  K_D = 1.2; // 0.60 // 1.20 good // 1.80 fail, but also good
+  K_P = 0.070;
+  K_D = 0.50;
   
-  TURN_SCALAR = 0.15; // this is the best i could find ( range from 0.10 - > max 0.30 ,,, 0.15 seems best)
-  // 0.20 slows down too much, when K_d is so high
+  TURN_SCALAR = 0.45;
 
-  routine_0();
+  // routine_test_pd();
+  //routine_drive_car();
+  //routine_0();
   //routine_test();
+
+  routine_1();
+}
+
+void routine_1() {
+  
+  bool cross1_flag = false;
+  bool cross2_flag = false;
+  bool cross3_flag = false;
+  bool cross4_flag = false;
+  
+  while(true) {
+    
+
+    
+    drive_car(0, 1);
+
+    if (block_count == 1 && !cross1_flag) {
+      cross1_flag = true;
+      
+      stop_start(2000);
+    }
+
+    if (block_count == 2 && !cross2_flag) {
+      cross2_flag = true;
+      
+      stop_start(2000);
+    }
+
+    if (block_count == 3 && !cross3_flag) {
+      cross3_flag = true;
+      
+      stop_start(2000);
+    }
+
+    if (block_count == 4 && !cross4_flag) {
+      cross4_flag = true;
+      
+      stop_start(2000);
+    }
+
+    if (!digitalRead(bump_5)) {
+      stop_car();
+      delay(500);
+      
+      output();
+    }
+  }
+}
+
+void routine_drive_car() {
+  while(true) {
+    drive_car(0,1);
+    
+    if (!digitalRead(bump_5)) {
+      stop_car();
+      delay(500);
+      output();
+    }
+  }
 }
 
 void routine_0() {
@@ -104,15 +164,11 @@ void routine_test() {
   }
 }
 
-
-void loop() {
-  //drive_car();
-  
-  //test_pd();
+void routine_test_pd() {
+  while(true) {
+    test_pd();
+  }
 }
 
-/* FUNCTIONS
- *  void drive_car(0, turn = 1);
- *  void stop_car()
- *  void duration(int encode_ct)
- */
+void loop() {
+}

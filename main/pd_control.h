@@ -10,6 +10,7 @@ int calc_p(int error) {
 
 int calc_d(int error, int prev_error) {
   int d = K_D *  (prev_error - error); //error - prev_error
+  d = constrain(d, -20, 20); // constrains d value to -20 and 20
   return d;
 }
 
