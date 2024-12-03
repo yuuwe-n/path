@@ -3,9 +3,10 @@
 
 #include "cross.h"
 
-const int DATA_COUNT = 9000; // ~ the encoder count, maybe store every other data points
+// note: arrays/variables do not get allocated unless they are run in main file
 
-// max data count should be above 8200
+const int DATA_COUNT = 9000;
+// max data count should be above 8200 for a full track run
 
 int count = 0;
 int count_encoder = 0;
@@ -21,7 +22,7 @@ short error_arr[DATA_COUNT];
 bool cross_arr[DATA_COUNT];
 byte block_arr[DATA_COUNT];
 
-int8_t pwm[DATA_COUNT][2]; // arrays dont get allocated unless used in function
+int8_t pwm[DATA_COUNT][2]; 
 short data[DATA_COUNT][8];
 
 void store_error(int error) {

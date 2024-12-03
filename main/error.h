@@ -1,13 +1,13 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-int calc_error(uint16_t input[8]) {
 
 /*
  * Negative error : black line is to the left => ERROR = -40mm => error < 0 : steer to the left
  * Positive error : black line is to the right => ERROR = 40mm => error > 0 : steer to the right
  */
-  
+
+int calc_error(uint16_t input[8]) {
   int error;
   int weighted_sum = 0;
   int temp[8]={0,0,0,0,0,0,0,0};

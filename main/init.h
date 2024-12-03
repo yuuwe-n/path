@@ -78,11 +78,7 @@ void initialize() {
   resetEncoderCount_left();
   resetEncoderCount_right();
 
-  delay(3000); // wait for setup
-  /*
-   * Your car's code must have a delay(2000); 
-   * statement at the end of the void setup{} section.
-   */
+  delay(2000); // wait for setup
 }
 
 #endif
