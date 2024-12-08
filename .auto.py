@@ -34,6 +34,6 @@ if __name__ == "__main__":
     copy_clipboard_to_file("input")
     
     # Step 2: Execute another Python script (replace "script.py" with your script name)
-    execute_python_file("mod_parse.py")
+    execute_python_file(".mod_parse.py")
 
 
