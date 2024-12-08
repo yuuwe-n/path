@@ -51,8 +51,6 @@ bool detect_cross(uint16_t norm_values[8]) {
 }
 
 
-
-
 int block_count = 0;
 bool inside_block = false; // Tracks whether we are currently in a block
 
@@ -68,44 +66,4 @@ void track_block(bool cross) {
         inside_block = false;
     }
 }
-
-
-/*
-bool detect_c(uint16_t norm_values[8]) {
-  int count = 0;
-
-  // Check sensors from index 0 to 7 (non-inclusive of 8)
-  for (int i = 0; i < 8; i++) {
-    if (norm_values[i] >= 1000) {
-      count++;
-      if (count >= 4) {
-        return true; // Return true as soon as 4 sensors meet the condition
-      }
-    }
-  }
-  return false; // Less than 4 sensors have values >= 1000
-}
-
-bool detect_cross(uint16_t norm_values[8]) {
-  int count = 0;
-
-  // Count sensors with values >= 1000 from index 0 to 7
-  for (int i = 0; i < 8; i++) {
-    if (norm_values[i] >= 1000) {
-      count++;
-    }
-  }
-
-  // Check if at least 4 sensors meet the condition
-  if (count >= 4) {
-    consecutive_cross += 1; // Increment consecutive count
-  } else {
-    consecutive_cross = 0; // Reset if condition is not met
-  }
-
-  // Return true if detected two times in a row
-  return consecutive_cross >= 2;
-}
-*/
-
 #endif
